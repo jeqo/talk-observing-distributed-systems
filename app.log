@@ -1,0 +1,10 @@
+2017-11-07 23:50:48,604 INFO [main] i.g.j.t.HelloWorldClientApp [HelloWorldClientApp.java:19] Hello Jorge
+2017-11-07 23:55:08,562 INFO [main] i.g.j.t.HelloWorldClient [HelloWorldClient.java:19] Calling Hello World Service - Operation `sayHi` - name=Jorge
+2017-11-07 23:55:08,567 INFO [main] i.g.j.t.HelloWorldClient [HelloWorldClient.java:19] Calling Hello World Service - Operation `sayHi` - name=Luca
+2017-11-07 23:55:08,567 INFO [main] i.g.j.t.HelloWorldClient [HelloWorldClient.java:19] Calling Hello World Service - Operation `sayHi` - name=Karina
+2017-11-08 00:17:47,754 INFO [main] i.g.j.t.HelloWorldClient [HelloWorldClient.java:29] Calling Hello World Service - Operation `sayHi` - name=Jorge
+2017-11-08 00:17:47,800 INFO [main] i.g.j.t.HelloWorldClient [HelloWorldClient.java:29] Calling Hello World Service - Operation `sayHi` - name=Luca
+2017-11-08 00:17:47,804 INFO [main] i.g.j.t.HelloWorldClient [HelloWorldClient.java:29] Calling Hello World Service - Operation `sayHi` - name=Karina
+2017-11-08 00:18:25,785 INFO [main] i.g.j.t.HelloWorldClient [HelloWorldClient.java:29] Calling Hello World Service - Operation `sayHi` - name=Jorge
+2017-11-08 00:18:25,826 INFO [main] i.g.j.t.HelloWorldClient [HelloWorldClient.java:29] Calling Hello World Service - Operation `sayHi` - name=Luca
+2017-11-08 00:18:25,829 INFO [main] i.g.j.t.HelloWorldClient [HelloWorldClient.java:29] Calling Hello World Service - Operation `sayHi` - name=Karina
