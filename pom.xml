@@ -6,8 +6,12 @@
     <artifactId>talk-distributed-tracing-noslides</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <modules>
-        <module>hello-world-server</module>
+        <module>hello-world-monolith</module>
+        <module>hello-world-service</module>
         <module>hello-world-client</module>
+        <module>tweets-service-ver1</module>
+        <module>tweets-service-ver2</module>
+        <module>hello-translation-service</module>
     </modules>
     <packaging>pom</packaging>
 

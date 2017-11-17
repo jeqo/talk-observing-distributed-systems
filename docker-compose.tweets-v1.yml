@@ -1,0 +1,16 @@
+---
+version: '3'
+services:
+  tweets-importer:
+    build: tweets-importer
+  tweets-service:
+    build: tweets-service-ver1
+    ports:
+      - 8080
+      - 8081
+  tweets-db:
+    build: tweets-service-ver1-db
+    environment:
+      POSTGRES_PASSWORD: example
+    ports:
+      - 5432:5432
