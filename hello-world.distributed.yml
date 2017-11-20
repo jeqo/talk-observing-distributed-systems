@@ -1,0 +1,14 @@
+version: '3'
+services:
+  hello-world-client:
+    build: hello-world-client
+    ports:
+      - 8080
+  hello-world-service:
+    build: hello-world-service
+    ports:
+      - 8080
+  hello-translation-service:
+    build: hello-translation-service
+    ports:
+      - 8080

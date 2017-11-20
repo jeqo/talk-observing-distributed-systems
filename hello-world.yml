@@ -1,0 +1,4 @@
+version: '3'
+services:
+  hello-world-monolith:
+    build: hello-world-monolith

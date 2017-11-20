@@ -38,7 +38,7 @@
                             <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>io.github.jeqo.demo.TweetsServiceVer1Application</mainClass>
+                            <mainClass>io.github.jeqo.demo.TranslationServiceApplication</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

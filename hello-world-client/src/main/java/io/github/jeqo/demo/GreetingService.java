@@ -1,9 +1,10 @@
-package io.github.jeqo.talk;
+package io.github.jeqo.demo;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -22,8 +23,8 @@ public class GreetingService {
 
   @GET
   @Path("{name}")
-  public Response greeting(@PathParam("name") String name) {
-    final String greeting = helloWorldClient.sayHi(name);
+  public Response greeting(@PathParam("name") String name, @QueryParam("lang") String lang) {
+    final String greeting = helloWorldClient.sayHi(name, lang);
     final GreetingRepresentation representation = new GreetingRepresentation(greeting);
     return Response.ok(representation).build();
   }

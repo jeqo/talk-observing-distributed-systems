@@ -1,4 +1,4 @@
-package io.github.jeqo.talk;
+package io.github.jeqo.demo;
 
 import io.dropwizard.Application;
 import io.dropwizard.Configuration;
@@ -17,6 +17,7 @@ public class HelloWorldClientApp extends Application<Configuration> {
   @Override
   public void run(Configuration configuration, Environment environment) throws Exception {
     final HelloWorldClient helloWorldClient = new HelloWorldClient();
-    environment.jersey().register(new GreetingService(helloWorldClient));
+    final GreetingService greetingService = new GreetingService(helloWorldClient);
+    environment.jersey().register(greetingService);
   }
 }

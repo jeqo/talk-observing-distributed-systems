@@ -1,4 +1,4 @@
-package io.github.jeqo.talk;
+package io.github.jeqo.demo;
 
 import io.dropwizard.Application;
 import io.dropwizard.Configuration;
@@ -14,6 +14,10 @@ public class HelloWorldServerApp extends Application<Configuration> {
   }
 
   public void run(Configuration configuration, Environment environment) throws Exception {
-    environment.jersey().register(new HelloWorldService());
+
+    final String baseUrl = "http://";
+    final HelloTranslationClient translationClient = new HelloTranslationClient(baseUrl);
+    final HelloWorldService component = new HelloWorldService(translationClient);
+    environment.jersey().register(component);
   }
 }

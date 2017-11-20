@@ -1,4 +1,4 @@
-package io.github.jeqo.talk;
+package io.github.jeqo.demo;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;

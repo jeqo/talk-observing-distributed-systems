@@ -1,4 +1,4 @@
-package io.github.jeqo.talk;
+package io.github.jeqo.demo;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
@@ -16,7 +16,7 @@ import java.io.InputStream;
  */
 class HelloWorldClient {
   private static final Logger LOGGER = LoggerFactory.getLogger(HelloWorldClient.class);
-  private static final String BASE_URL = "http://localhost:8080/hello-world";
+  private static final String BASE_URL = "http://hello-world-service:8080/hello-world";
 
   private final HttpClient httpClient;
 
@@ -25,13 +25,11 @@ class HelloWorldClient {
     httpClient = HttpClientBuilder.create().build();
   }
 
-  String sayHi(String name) {
+  String sayHi(String name, String lang) {
     LOGGER.info("Calling Hello World Service - Operation `sayHi` - name=" + name);
-    //return helloWorldService.sayHi(name);
-    //throw new UnsupportedOperationException("not implemented yet");
 
     try {
-      final HttpGet httpGet = new HttpGet(BASE_URL + "/" + name);
+      final HttpGet httpGet = new HttpGet(BASE_URL + "/" + name + "?lang=" + lang);
       HttpResponse response = httpClient.execute(httpGet);
       InputStream entityStream = response.getEntity().getContent();
       return IOUtils.toString(entityStream, "UTF-8");
