@@ -6,10 +6,14 @@ services:
       - discovery.type=single-node
       - xpack.security.enabled=false
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ports:
+      - 9200:9200
   log-kibana:
     image: docker.elastic.co/kibana/kibana:5.6.2
     environment:
       - xpack.security.enabled=false
+      - "ELASTICSEARCH_URL=http://log-elasticsearch:9200"
+
     ports:
       - 5601:5601
   log-fluentd-bit:

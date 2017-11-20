@@ -4,11 +4,26 @@ services:
     build: hello-world-client
     ports:
       - 8080
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-address: localhost:24224
+        tag: httpd.access
   hello-world-service:
     build: hello-world-service
     ports:
       - 8080
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-address: localhost:24224
+        tag: httpd.access
   hello-translation-service:
     build: hello-translation-service
     ports:
       - 8080
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-address: localhost:24224
+        tag: httpd.access
