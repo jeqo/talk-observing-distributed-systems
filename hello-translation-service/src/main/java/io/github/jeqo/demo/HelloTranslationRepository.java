@@ -6,16 +6,16 @@ import java.util.Map;
 /**
  *
  */
-public class HelloTranslationRepository {
+class HelloTranslationRepository {
   private final Map<String, String> translationMap;
 
-  public HelloTranslationRepository() {
+  HelloTranslationRepository() {
     translationMap = new HashMap<>();
     translationMap.put("es", "Hola");
     translationMap.put("it", "Ciao");
   }
 
-  public String translate(String lang) {
+  String translate(String lang) {
     return translationMap.getOrDefault(lang, "Hello");
   }
 }

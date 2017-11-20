@@ -4,7 +4,6 @@ import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.HttpClientBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,8 +20,9 @@ class HelloWorldClient {
   private final HttpClient httpClient;
 
 
-  HelloWorldClient() {
-    httpClient = HttpClientBuilder.create().build();
+  HelloWorldClient(HttpClient httpClient) {
+
+    this.httpClient = httpClient;
   }
 
   String sayHi(String name, String lang) {

@@ -4,7 +4,6 @@ import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.HttpClientBuilder;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,17 +12,17 @@ import java.nio.charset.Charset;
 /**
  *
  */
-public class HelloTranslationClient {
+class HelloTranslationClient {
 
   private final HttpClient httpClient;
   private final String baseUrl;
 
-  public HelloTranslationClient(String baseUrl) {
-    httpClient = HttpClientBuilder.create().build();
+  HelloTranslationClient(HttpClient httpClient, String baseUrl) {
+    this.httpClient = httpClient;
     this.baseUrl = baseUrl;
   }
 
-  public String translateHello(String lang) {
+  String translateHello(String lang) {
     try {
       final String uri = baseUrl + "/hello/" + lang;
       final HttpGet httpGet = new HttpGet(uri);
