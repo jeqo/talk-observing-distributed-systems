@@ -12,6 +12,7 @@
         <module>tweets-service-ver1</module>
         <module>tweets-service-ver2</module>
         <module>hello-translation-service</module>
+        <module>tweets-producer</module>
     </modules>
     <packaging>pom</packaging>
 

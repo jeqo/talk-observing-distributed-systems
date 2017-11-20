@@ -1,0 +1,8 @@
+---
+# This Compose File contains the Confluent Platform services
+version: '3'
+services:
+  kafka:
+    image: jeqo/apache-kafka:0.11.0.0-2.11
+  zookeeper:
+    image: jeqo/apache-kafka-zookeeper:0.11.0.0-2.11

@@ -1,8 +1,6 @@
 ---
 version: '3'
 services:
-  tweets-importer:
-    build: tweets-importer
   tweets-service:
     build: tweets-service-ver1
     ports:

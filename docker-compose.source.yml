@@ -1,0 +1,13 @@
+---
+version: '3'
+services:
+  tweets-importer:
+    build: tweets-importer
+  tweets-producer-v1:
+    build: tweets-producer
+    environment:
+      - TWEETS_ENDPOINT="http://tweets-service:8080/v1/tweets"
+  tweets-producer-v2:
+    build: tweets-producer
+    environment:
+      - TWEETS_ENDPOINT="http://tweets-worker:8080/v2/tweets"
