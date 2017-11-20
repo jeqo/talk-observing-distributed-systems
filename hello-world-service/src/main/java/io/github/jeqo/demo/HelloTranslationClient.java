@@ -25,7 +25,7 @@ public class HelloTranslationClient {
 
   public String translateHello(String lang) {
     try {
-      final String uri = baseUrl + "/" + lang;
+      final String uri = baseUrl + "/hello/" + lang;
       final HttpGet httpGet = new HttpGet(uri);
       final HttpResponse httpResponse = httpClient.execute(httpGet);
       final InputStream content = httpResponse.getEntity().getContent();

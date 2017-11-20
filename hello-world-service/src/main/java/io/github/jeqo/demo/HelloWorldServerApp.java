@@ -15,7 +15,7 @@ public class HelloWorldServerApp extends Application<Configuration> {
 
   public void run(Configuration configuration, Environment environment) throws Exception {
 
-    final String baseUrl = "http://";
+    final String baseUrl = "http://hello-translation-service:8080/translation";
     final HelloTranslationClient translationClient = new HelloTranslationClient(baseUrl);
     final HelloWorldService component = new HelloWorldService(translationClient);
     environment.jersey().register(component);
