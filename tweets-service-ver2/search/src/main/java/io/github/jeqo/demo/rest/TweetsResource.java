@@ -12,7 +12,7 @@ import javax.ws.rs.core.Response;
 /**
  *
  */
-@Path("v1/tweets")
+@Path("v2/tweets")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class TweetsResource {

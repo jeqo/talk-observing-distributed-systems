@@ -31,7 +31,8 @@ class HelloWorldClient {
     //throw new UnsupportedOperationException("not implemented yet");
 
     try {
-      HttpResponse response = httpClient.execute(new HttpGet(BASE_URL + "/" + name));
+      final HttpGet httpGet = new HttpGet(BASE_URL + "/" + name);
+      HttpResponse response = httpClient.execute(httpGet);
       InputStream entityStream = response.getEntity().getContent();
       return IOUtils.toString(entityStream, "UTF-8");
     } catch (IOException e) {
