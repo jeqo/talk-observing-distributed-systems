@@ -1,9 +1,5 @@
 version: '3.1'
 services:
-  pushgateway:
-    image: prom/pushgateway
-    ports:
-      - 9091:9091
   prometheus:
     build: metrics/prometheus
     ports:

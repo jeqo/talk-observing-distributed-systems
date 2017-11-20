@@ -2,3 +2,6 @@ version: '3'
 services:
   hello-world-monolith:
     build: hello-world-monolith
+    ports:
+      - 8080
+      - 8081
