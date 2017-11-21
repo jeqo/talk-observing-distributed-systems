@@ -1,5 +1,6 @@
-package io.github.jeqo.demo;
+package io.github.jeqo.demo.resources;
 
+import io.github.jeqo.demo.infra.HelloWorldClient;
 import io.opentracing.ActiveSpan;
 import io.opentracing.Span;
 import io.opentracing.contrib.dropwizard.DropWizardTracer;
@@ -25,8 +26,8 @@ public class GreetingService {
   private final HelloWorldClient helloWorldClient;
   private final DropWizardTracer dropWizardTracer;
 
-  GreetingService(HelloWorldClient helloWorldClient,
-                  DropWizardTracer dropWizardTracer) {
+  public GreetingService(HelloWorldClient helloWorldClient,
+                         DropWizardTracer dropWizardTracer) {
     this.helloWorldClient = helloWorldClient;
     this.dropWizardTracer = dropWizardTracer;
   }

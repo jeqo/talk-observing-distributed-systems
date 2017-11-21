@@ -42,7 +42,8 @@ public class IndexerServiceApplication extends Application<Configuration> {
   }
 
   public void run(Configuration configuration, Environment environment) throws Exception {
-
+    // INSTRUMENTATION
+    // Metrics Instrumentation
     final CollectorRegistry collectorRegistry = new CollectorRegistry();
     collectorRegistry.register(new DropwizardExports(environment.metrics()));
     environment.admin()
@@ -54,6 +55,7 @@ public class IndexerServiceApplication extends Application<Configuration> {
         .withConstLabel("service", getName())
         .build();
 
+    // Tracing Instrumentation
     final Tracer tracer = getTracer();
     final Tracer metricsTracer = io.opentracing.contrib.metrics.Metrics.decorate(tracer, reporter);
     GlobalTracer.register(metricsTracer);
@@ -86,7 +88,7 @@ public class IndexerServiceApplication extends Application<Configuration> {
     try {
       return new com.uber.jaeger.Configuration(
           getName(),
-          new com.uber.jaeger.Configuration.SamplerConfiguration("const", 1),
+          new com.uber.jaeger.Configuration.SamplerConfiguration("const", 1), // 100%
           new com.uber.jaeger.Configuration.ReporterConfiguration(
               true,
               "tracing-jaeger",

@@ -1,4 +1,4 @@
-package io.github.jeqo.demo;
+package io.github.jeqo.demo.infra;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
@@ -13,19 +13,19 @@ import java.io.InputStream;
 /**
  *
  */
-class HelloWorldClient {
+public class HelloWorldClient {
   private static final Logger LOGGER = LoggerFactory.getLogger(HelloWorldClient.class);
   private static final String BASE_URL = "http://hello-world-service:8080/hello-world";
 
   private final HttpClient httpClient;
 
 
-  HelloWorldClient(HttpClient httpClient) {
+  public HelloWorldClient(HttpClient httpClient) {
 
     this.httpClient = httpClient;
   }
 
-  String sayHi(String name, String lang) {
+  public String sayHi(String name, String lang) {
     LOGGER.info("Calling Hello World Service - Operation `sayHi` - name=" + name);
 
     try {

@@ -3,6 +3,8 @@ package io.github.jeqo.demo;
 import io.dropwizard.Application;
 import io.dropwizard.Configuration;
 import io.dropwizard.setup.Environment;
+import io.github.jeqo.demo.infra.HelloWorldClient;
+import io.github.jeqo.demo.resources.GreetingService;
 import io.opentracing.Tracer;
 import io.opentracing.contrib.apache.http.client.TracingHttpClientBuilder;
 import io.opentracing.contrib.dropwizard.DropWizardTracer;
@@ -17,16 +19,14 @@ import org.apache.http.client.HttpClient;
 public class HelloWorldClientApp extends Application<Configuration> {
 
   public static void main(String[] args) throws Exception {
-    final HelloWorldClientApp app = new HelloWorldClientApp();
-    app.run(args);
+    new HelloWorldClientApp().run(args);
   }
 
   @Override
   public void run(Configuration configuration, Environment environment) throws Exception {
-
+    //
     final Tracer tracer = getTracer();
     GlobalTracer.register(tracer);
-
     final DropWizardTracer dropWizardTracer = new DropWizardTracer(tracer);
     final ServerTracingFeature serverTracingFeature =
         new ServerTracingFeature.Builder(dropWizardTracer)
@@ -34,19 +34,21 @@ public class HelloWorldClientApp extends Application<Configuration> {
             .build();
     environment.jersey().register(serverTracingFeature);
 
+    //
     final HttpClient httpClient = new TracingHttpClientBuilder().build();
 
     final HelloWorldClient helloWorldClient = new HelloWorldClient(httpClient);
     final GreetingService greetingService = new GreetingService(helloWorldClient, dropWizardTracer);
-    environment.jersey().register(greetingService);
 
+    //
+    environment.jersey().register(greetingService);
   }
 
   private Tracer getTracer() {
     try {
       return new com.uber.jaeger.Configuration(
           "hello-world-client",
-          new com.uber.jaeger.Configuration.SamplerConfiguration("const", 1),
+          new com.uber.jaeger.Configuration.SamplerConfiguration("const", 1), //100%
           new com.uber.jaeger.Configuration.ReporterConfiguration(
               true,
               "tracing-jaeger",

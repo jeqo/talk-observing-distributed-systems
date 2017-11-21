@@ -13,10 +13,10 @@ import io.prometheus.client.exporter.MetricsServlet;
  * Hello Monolith Application to explain applications that all services are part of the same
  * application.
  */
-public class HelloWorldMonolith extends Application<Configuration> {
+public class HelloWorldMonolithApp extends Application<Configuration> {
 
   public static void main(String[] args) throws Exception {
-    new HelloWorldMonolith().run(args);
+    new HelloWorldMonolithApp().run(args);
   }
 
   @Override

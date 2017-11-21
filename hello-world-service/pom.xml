@@ -68,7 +68,7 @@
                             <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>io.github.jeqo.demo.HelloWorldServerApp</mainClass>
+                            <mainClass>io.github.jeqo.demo.HelloWorldServiceApp</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

@@ -1,5 +1,6 @@
-package io.github.jeqo.demo;
+package io.github.jeqo.demo.resources;
 
+import io.github.jeqo.demo.infra.HelloTranslationRepository;
 import io.opentracing.contrib.dropwizard.Trace;
 
 import javax.ws.rs.GET;
@@ -8,14 +9,14 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Response;
 
 /**
- *
+ * Translation Service HTTP Endpoint
  */
 @Path("translation")
 public class HelloTranslationResource {
 
   private final HelloTranslationRepository repository;
 
-  HelloTranslationResource(HelloTranslationRepository repository) {
+  public HelloTranslationResource(HelloTranslationRepository repository) {
     this.repository = repository;
   }
 

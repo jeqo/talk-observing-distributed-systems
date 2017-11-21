@@ -1,5 +1,6 @@
-package io.github.jeqo.demo;
+package io.github.jeqo.demo.resources;
 
+import io.github.jeqo.demo.infra.HelloTranslationClient;
 import io.opentracing.ActiveSpan;
 import io.opentracing.Span;
 import io.opentracing.contrib.dropwizard.DropWizardTracer;
@@ -16,12 +17,12 @@ import javax.ws.rs.core.Request;
  *
  */
 @Path("hello-world")
-public class HelloWorldService {
+public class HelloWorldResource {
 
   private final HelloTranslationClient translationClient;
   private final DropWizardTracer dropWizardTracer;
 
-  HelloWorldService(HelloTranslationClient translationClient, DropWizardTracer dropWizardTracer) {
+  public HelloWorldResource(HelloTranslationClient translationClient, DropWizardTracer dropWizardTracer) {
     this.translationClient = translationClient;
     this.dropWizardTracer = dropWizardTracer;
   }

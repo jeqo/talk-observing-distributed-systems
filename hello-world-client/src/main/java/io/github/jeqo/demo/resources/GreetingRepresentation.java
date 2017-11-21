@@ -1,4 +1,4 @@
-package io.github.jeqo.demo;
+package io.github.jeqo.demo.resources;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;

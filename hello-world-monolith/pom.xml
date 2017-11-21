@@ -40,7 +40,7 @@
                             <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>io.github.jeqo.demo.HelloWorldMonolith</mainClass>
+                            <mainClass>io.github.jeqo.demo.HelloWorldMonolithApp</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

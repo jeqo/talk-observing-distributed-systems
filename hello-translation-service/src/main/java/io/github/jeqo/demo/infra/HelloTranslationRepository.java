@@ -1,21 +1,21 @@
-package io.github.jeqo.demo;
+package io.github.jeqo.demo.infra;
 
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- *
+ * Hello Translation Repository
  */
-class HelloTranslationRepository {
+public class HelloTranslationRepository {
   private final Map<String, String> translationMap;
 
-  HelloTranslationRepository() {
+  public HelloTranslationRepository() {
     translationMap = new HashMap<>();
     translationMap.put("es", "Hola");
     translationMap.put("it", "Ciao");
   }
 
-  String translate(String lang) {
+  public String translate(String lang) {
     return translationMap.getOrDefault(lang, "Hello");
   }
 }
