@@ -1,7 +1,6 @@
 package io.github.jeqo.demo.infra;
 
 import io.opentracing.ActiveSpan;
-import io.opentracing.References;
 import io.opentracing.SpanContext;
 import io.opentracing.Tracer;
 import io.opentracing.contrib.kafka.TracingKafkaUtils;
