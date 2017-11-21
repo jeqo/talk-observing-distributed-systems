@@ -27,6 +27,7 @@
             <artifactId>rest</artifactId>
         </dependency>
 
+        <!-- OpenTracing Instrumentation -->
         <dependency>
             <groupId>io.opentracing.contrib</groupId>
             <artifactId>opentracing-kafka-client</artifactId>

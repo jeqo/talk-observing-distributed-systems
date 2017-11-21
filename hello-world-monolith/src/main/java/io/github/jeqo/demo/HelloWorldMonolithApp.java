@@ -4,7 +4,7 @@ import io.dropwizard.Application;
 import io.dropwizard.Configuration;
 import io.dropwizard.setup.Environment;
 import io.github.jeqo.demo.domain.TranslationService;
-import io.github.jeqo.demo.resources.GreetingResource;
+import io.github.jeqo.demo.rest.GreetingResource;
 import io.prometheus.client.CollectorRegistry;
 import io.prometheus.client.dropwizard.DropwizardExports;
 import io.prometheus.client.exporter.MetricsServlet;

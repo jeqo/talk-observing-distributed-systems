@@ -5,12 +5,11 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>io.github.jeqo.talk</groupId>
-        <artifactId>talk-distributed-tracing-noslides</artifactId>
+        <artifactId>hello-world-distributed</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>hello-world-monolith</artifactId>
-
+    <artifactId>hello-translation-service</artifactId>
 
     <dependencies>
         <dependency>
@@ -23,14 +22,30 @@
             <artifactId>dropwizard-core</artifactId>
         </dependency>
 
-        <!-- Metrics Instrumentation Prometheus -->
+        <!-- OpenTracing API -->
         <dependency>
-            <groupId>io.prometheus</groupId>
-            <artifactId>simpleclient_dropwizard</artifactId>
+            <groupId>io.opentracing</groupId>
+            <artifactId>opentracing-api</artifactId>
         </dependency>
         <dependency>
-            <groupId>io.prometheus</groupId>
-            <artifactId>simpleclient_servlet</artifactId>
+            <groupId>io.opentracing</groupId>
+            <artifactId>opentracing-util</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.opentracing</groupId>
+            <artifactId>opentracing-mock</artifactId>
+        </dependency>
+
+        <!-- OpenTracing Implementation - JaegerTracing -->
+        <dependency>
+            <groupId>com.uber.jaeger</groupId>
+            <artifactId>jaeger-core</artifactId>
+        </dependency>
+
+        <!-- OpenTracing Instrumentation -->
+        <dependency>
+            <groupId>io.opentracing.contrib.dropwizard</groupId>
+            <artifactId>dropwizard-opentracing</artifactId>
         </dependency>
     </dependencies>
 
@@ -45,7 +60,7 @@
                             <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>io.github.jeqo.demo.HelloWorldMonolithApp</mainClass>
+                            <mainClass>io.github.jeqo.demo.TranslationServiceApplication</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -67,8 +82,6 @@
                     </execution>
                 </executions>
             </plugin>
-
         </plugins>
     </build>
-
 </project>
