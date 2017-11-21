@@ -72,6 +72,11 @@
             <artifactId>opentracing-elasticsearch-client</artifactId>
             <version>0.0.3</version>
         </dependency>
+        <dependency>
+            <groupId>io.opentracing.contrib</groupId>
+            <artifactId>opentracing-metrics-prometheus</artifactId>
+            <version>0.1.4</version>
+        </dependency>
     </dependencies>
 
 </project>

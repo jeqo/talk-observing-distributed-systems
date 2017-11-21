@@ -27,6 +27,11 @@
             <artifactId>opentracing-kafka-client</artifactId>
             <version>0.0.4</version>
         </dependency>
+        <dependency>
+            <groupId>io.opentracing.contrib</groupId>
+            <artifactId>opentracing-metrics-prometheus</artifactId>
+            <version>0.1.4</version>
+        </dependency>
     </dependencies>
 
     <build>

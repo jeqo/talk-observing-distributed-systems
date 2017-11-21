@@ -10,8 +10,12 @@ import io.opentracing.contrib.dropwizard.DropWizardTracer;
 import io.opentracing.contrib.dropwizard.ServerTracingFeature;
 import io.opentracing.contrib.elasticsearch.TracingHttpClientConfigCallback;
 import io.opentracing.contrib.kafka.TracingKafkaConsumer;
+import io.opentracing.contrib.metrics.prometheus.PrometheusMetricsReporter;
 import io.opentracing.mock.MockTracer;
 import io.opentracing.util.GlobalTracer;
+import io.prometheus.client.CollectorRegistry;
+import io.prometheus.client.dropwizard.DropwizardExports;
+import io.prometheus.client.exporter.MetricsServlet;
 import org.apache.http.HttpHost;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
@@ -34,13 +38,26 @@ public class IndexerServiceApplication extends Application<Configuration> {
 
   @Override
   public String getName() {
-    return "tweets-indexer-service";
+    return "tweets-indexer-v2";
   }
 
   public void run(Configuration configuration, Environment environment) throws Exception {
+
+    final CollectorRegistry collectorRegistry = new CollectorRegistry();
+    collectorRegistry.register(new DropwizardExports(environment.metrics()));
+    environment.admin()
+        .addServlet("metrics", new MetricsServlet(collectorRegistry))
+        .addMapping("/metrics");
+
+    final PrometheusMetricsReporter reporter = PrometheusMetricsReporter.newMetricsReporter()
+        .withCollectorRegistry(collectorRegistry)
+        .withConstLabel("service", getName())
+        .build();
+
     final Tracer tracer = getTracer();
-    GlobalTracer.register(tracer);
-    final DropWizardTracer dropWizardTracer = new DropWizardTracer(tracer);
+    final Tracer metricsTracer = io.opentracing.contrib.metrics.Metrics.decorate(tracer, reporter);
+    GlobalTracer.register(metricsTracer);
+    final DropWizardTracer dropWizardTracer = new DropWizardTracer(metricsTracer);
     final ServerTracingFeature serverTracingFeature =
         new ServerTracingFeature.Builder(dropWizardTracer)
             .withTraceAnnotations()
@@ -49,7 +66,7 @@ public class IndexerServiceApplication extends Application<Configuration> {
 
     final HttpHost httpHost = new HttpHost("tweets-elasticsearch", 9200);
     final RestClientBuilder restClientBuilder =
-        RestClient.builder(httpHost).setHttpClientConfigCallback(new TracingHttpClientConfigCallback(tracer));
+        RestClient.builder(httpHost).setHttpClientConfigCallback(new TracingHttpClientConfigCallback(metricsTracer));
     final RestClient restClient = restClientBuilder.build();
     final ElasticsearchTweetRepository elasticsearchRepository = new ElasticsearchTweetRepository(restClient);
 
@@ -59,7 +76,7 @@ public class IndexerServiceApplication extends Application<Configuration> {
     consumerConfigs.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
     consumerConfigs.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, false);
     final KafkaConsumer<Long, String> kafkaConsumer = new KafkaConsumer<>(consumerConfigs, new LongDeserializer(), new StringDeserializer());
-    final TracingKafkaConsumer<Long, String> tracingKafkaConsumer = new TracingKafkaConsumer<>(kafkaConsumer, tracer);
+    final TracingKafkaConsumer<Long, String> tracingKafkaConsumer = new TracingKafkaConsumer<>(kafkaConsumer, metricsTracer);
     final Runnable kafkaTweetEventConsumer = new KafkaTweetEventConsumer(tracingKafkaConsumer, elasticsearchRepository);
     final ExecutorService executorService = environment.lifecycle().executorService("kafka-consumer").build();
     executorService.submit(kafkaTweetEventConsumer);
@@ -68,7 +85,7 @@ public class IndexerServiceApplication extends Application<Configuration> {
   private Tracer getTracer() {
     try {
       return new com.uber.jaeger.Configuration(
-          "tweets-indexer-v2",
+          getName(),
           new com.uber.jaeger.Configuration.SamplerConfiguration("const", 1),
           new com.uber.jaeger.Configuration.ReporterConfiguration(
               true,

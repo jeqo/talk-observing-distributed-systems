@@ -43,5 +43,17 @@
             <artifactId>dropwizard-opentracing</artifactId>
             <version>0.2.2</version>
         </dependency>
+
+
+        <dependency>
+            <groupId>io.prometheus</groupId>
+            <artifactId>simpleclient_dropwizard</artifactId>
+            <version>0.0.26</version>
+        </dependency>
+        <dependency>
+            <groupId>io.prometheus</groupId>
+            <artifactId>simpleclient_servlet</artifactId>
+            <version>0.0.26</version>
+        </dependency>
     </dependencies>
 </project>

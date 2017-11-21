@@ -26,14 +26,20 @@ scrape_configs:
     static_configs:
       - targets: ['localhost:9090']
 
+  # Hello World
   - job_name: 'hello-world-monolith'
     static_configs:
       - targets: ['hello-world-monolith:8081']
-
-#  - job_name: 'pushgateway'
-#
-#    # metrics_path defaults to '/metrics'
-#    # scheme defaults to 'http'.
-#
-#    static_configs:
-#      - targets: ['pushgateway:9091']
+  # Tweets Demo
+  - job_name: 'tweets-service-v1'
+    static_configs:
+      - targets: ['tweets-service:8081']
+  - job_name: 'tweets-worker-v2'
+    static_configs:
+      - targets: ['tweets-worker:8081']
+  - job_name: 'tweets-indexer-v2'
+    static_configs:
+      - targets: ['tweets-indexer:8081']
+  - job_name: 'tweets-search-v2'
+    static_configs:
+      - targets: ['tweets-search:8081']
