@@ -1,6 +1,5 @@
 package io.github.jeqo.demo.rest;
 
-import brave.opentracing.BraveSpan;
 import io.github.jeqo.demo.domain.Tweet;
 import io.github.jeqo.demo.domain.TweetsQuery;
 import io.github.jeqo.demo.domain.TweetsService;

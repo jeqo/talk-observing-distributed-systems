@@ -81,6 +81,8 @@ public class JooqPostgresTweetsRepository implements TweetsRepository {
               .from(TWEETS)
               .join(USERS)
               .on(TWEETS.USER_ID.eq(USERS.ID))
+              .orderBy(TWEETS.ID.desc())
+              .limit(500)
               .fetch();
       return
           records.stream()

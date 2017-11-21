@@ -2,7 +2,7 @@ CREATE TABLE users (
     id numeric (20,0) PRIMARY KEY,
     name varchar (300) NOT NULL,
     screen_name varchar (300) NOT NULL,
-    location varchar (300) NOT NULL,
+    location varchar (300),
     verified boolean NOT NULL
 );
 

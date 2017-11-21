@@ -32,7 +32,7 @@ public class ElasticsearchTweetRepository implements TweetRepository {
           new SimpleQueryStringBuilder(queryText);
       simpleQueryStringBuilder.defaultOperator(Operator.AND);
       searchSourceBuilder.query(simpleQueryStringBuilder);
-      searchSourceBuilder.size(10000);
+      searchSourceBuilder.size(500);
 
       //LOGGER.info("Elasticsearch query: {}", searchSourceBuilder.toString());
 

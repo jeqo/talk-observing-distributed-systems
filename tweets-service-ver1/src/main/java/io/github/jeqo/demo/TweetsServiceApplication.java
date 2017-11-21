@@ -1,7 +1,5 @@
 package io.github.jeqo.demo;
 
-import brave.Tracing;
-import brave.opentracing.BraveTracer;
 import io.dropwizard.Application;
 import io.dropwizard.Configuration;
 import io.dropwizard.setup.Environment;
@@ -18,9 +16,6 @@ import io.opentracing.util.GlobalTracer;
 import io.prometheus.client.CollectorRegistry;
 import io.prometheus.client.dropwizard.DropwizardExports;
 import io.prometheus.client.exporter.MetricsServlet;
-import zipkin2.Span;
-import zipkin2.reporter.AsyncReporter;
-import zipkin2.reporter.okhttp3.OkHttpSender;
 
 /**
  *
@@ -85,7 +80,7 @@ public class TweetsServiceApplication extends Application<Configuration> {
     }
   }
 
-  private Tracer getZipkinTracer() {
+  /*private Tracer getZipkinTracer() {
     try {
       // Configure a reporter, which controls how often spans are sent
       //   (the dependency is io.zipkin.reporter2:zipkin-sender-okhttp3)
@@ -105,5 +100,5 @@ public class TweetsServiceApplication extends Application<Configuration> {
       e.printStackTrace();
       return new MockTracer();
     }
-  }
+  }*/
 }

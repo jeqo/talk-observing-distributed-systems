@@ -1,5 +1,5 @@
 ---
-# This Compose File contains the Confluent Platform services
+# Tweets Apache Kafka services
 version: '3'
 services:
   kafka:

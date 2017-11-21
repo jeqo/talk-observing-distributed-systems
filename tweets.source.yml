@@ -1,4 +1,5 @@
 ---
+# Twitter to Tweets Service services
 version: '3'
 services:
   tweets-importer:
@@ -6,8 +7,10 @@ services:
   tweets-producer-v1:
     build: tweets-producer
     environment:
-      - TWEETS_ENDPOINT="http://tweets-service:8080/v1/tweets"
+      - TWEETS_ENDPOINT=http://tweets-service:8080/v1/tweets
+      - GROUP_ID=tweets-producer-v1
   tweets-producer-v2:
     build: tweets-producer
     environment:
-      - TWEETS_ENDPOINT="http://tweets-worker:8080/v2/tweets"
+      - TWEETS_ENDPOINT=http://tweets-worker:8080/v2/tweets
+      - GROUP_ID=tweets-producer-v2

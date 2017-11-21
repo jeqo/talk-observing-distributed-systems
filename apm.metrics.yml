@@ -1,0 +1,8 @@
+---
+# APM Metrics Service
+version: '3'
+services:
+  metrics-prometheus:
+    build: metrics/prometheus
+    ports:
+      - 9090:9090
