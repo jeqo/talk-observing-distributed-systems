@@ -32,6 +32,8 @@ public class IndexerServiceApplication extends Application<Configuration> {
   }
 
   public void run(Configuration configuration, Environment environment) throws Exception {
+
+
     final Properties consumerConfigs = new Properties();
     consumerConfigs.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "kafka:9092");
     consumerConfigs.put(ConsumerConfig.GROUP_ID_CONFIG, getName());
@@ -46,4 +48,5 @@ public class IndexerServiceApplication extends Application<Configuration> {
     final ExecutorService executorService = environment.lifecycle().executorService("kafka-consumer").build();
     executorService.submit(kafkaTweetEventConsumer);
   }
+
 }

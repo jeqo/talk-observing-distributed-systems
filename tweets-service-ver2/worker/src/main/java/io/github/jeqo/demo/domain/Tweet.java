@@ -122,7 +122,8 @@ public class Tweet {
   public static class Hashtag {
     private final String text;
 
-    public Hashtag(String text) {
+    @JsonCreator
+    public Hashtag(@JsonProperty("text") String text) {
       this.text = text;
     }
 
@@ -137,6 +138,7 @@ public class Tweet {
       return hashtagRepresentation;
     }
 
+    @JsonProperty("text")
     public String text() {
       return text;
     }

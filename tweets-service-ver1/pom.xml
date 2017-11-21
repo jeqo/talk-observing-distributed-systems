@@ -54,11 +54,6 @@
         </dependency>
         <dependency>
             <groupId>io.opentracing.contrib</groupId>
-            <artifactId>opentracing-apache-httpclient</artifactId>
-            <version>0.0.2</version>
-        </dependency>
-        <dependency>
-            <groupId>io.opentracing.contrib</groupId>
             <artifactId>opentracing-jdbc</artifactId>
             <version>0.0.5</version>
         </dependency>

@@ -7,6 +7,8 @@ import io.github.jeqo.demo.domain.TweetEventRepository;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.clients.producer.RecordMetadata;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.ExecutionException;
 
@@ -14,6 +16,8 @@ import java.util.concurrent.ExecutionException;
  *
  */
 public class KafkaTweetEventRepository implements TweetEventRepository {
+  private static final Logger LOGGER = LoggerFactory.getLogger(KafkaTweetEventRepository.class);
+
   private final Producer<Long, String> kafkaProducer;
   private final ObjectMapper objectMapper;
 
@@ -30,7 +34,7 @@ public class KafkaTweetEventRepository implements TweetEventRepository {
       final String value = objectMapper.writeValueAsString(tweet);
       final ProducerRecord<Long, String> producerRecord = new ProducerRecord<>("tweet-events", key, value);
       final RecordMetadata metadata = kafkaProducer.send(producerRecord).get();
-      //TODO print metadata
+      LOGGER.info("Kafka Producer Metadata: {}-{}:{}", metadata.topic(), metadata.partition(), metadata.offset());
     } catch (JsonProcessingException | InterruptedException | ExecutionException e) {
       e.printStackTrace();
     }
