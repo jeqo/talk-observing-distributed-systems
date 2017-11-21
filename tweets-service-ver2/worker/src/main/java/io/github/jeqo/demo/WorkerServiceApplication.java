@@ -63,7 +63,7 @@ public class WorkerServiceApplication extends Application<Configuration> {
     environment.jersey().register(serverTracingFeature);
 
     final Properties producerConfigs = new Properties();
-    producerConfigs.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "kafka:9092");
+    producerConfigs.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "tweets-kafka:9092");
     producerConfigs.put(ProducerConfig.ACKS_CONFIG, "all");
     producerConfigs.put(ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG, true);
     final KafkaProducer<Long, String> kafkaProducer =

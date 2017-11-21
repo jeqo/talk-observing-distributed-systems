@@ -71,7 +71,7 @@ public class IndexerServiceApplication extends Application<Configuration> {
     final ElasticsearchTweetRepository elasticsearchRepository = new ElasticsearchTweetRepository(restClient);
 
     final Properties consumerConfigs = new Properties();
-    consumerConfigs.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "kafka:9092");
+    consumerConfigs.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "tweets-kafka:9092");
     consumerConfigs.put(ConsumerConfig.GROUP_ID_CONFIG, getName());
     consumerConfigs.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
     consumerConfigs.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, false);

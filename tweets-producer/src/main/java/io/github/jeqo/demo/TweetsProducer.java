@@ -37,7 +37,7 @@ public class TweetsProducer {
     }
 
     final Properties consumerConfigs = new Properties();
-    consumerConfigs.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "kafka:9092");
+    consumerConfigs.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "tweets-source-kafka:9092");
     consumerConfigs.put(ConsumerConfig.GROUP_ID_CONFIG, System.getenv("GROUP_ID"));
     consumerConfigs.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
     consumerConfigs.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, false);

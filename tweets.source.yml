@@ -2,15 +2,19 @@
 # Twitter to Tweets Service services
 version: '3'
 services:
-  tweets-importer:
+  tweets-source-importer:
     build: tweets-importer
-  tweets-producer-v1:
+  tweets-source-producer-v1:
     build: tweets-producer
     environment:
       - TWEETS_ENDPOINT=http://tweets-service:8080/v1/tweets
       - GROUP_ID=tweets-producer-v1
-  tweets-producer-v2:
+  tweets-source-producer-v2:
     build: tweets-producer
     environment:
       - TWEETS_ENDPOINT=http://tweets-worker:8080/v2/tweets
       - GROUP_ID=tweets-producer-v2
+  tweets-source-kafka:
+    image: jeqo/apache-kafka:0.11.0.0-2.11
+  tweets-source-zookeeper:
+    image: jeqo/apache-kafka-zookeeper:0.11.0.0-2.11
