@@ -48,6 +48,16 @@
             <version>0.21.0</version>
         </dependency>
         <dependency>
+            <groupId>io.opentracing.brave</groupId>
+            <artifactId>brave-opentracing</artifactId>
+            <version>0.22.1</version>
+        </dependency>
+        <dependency>
+            <groupId>io.zipkin.reporter2</groupId>
+            <artifactId>zipkin-sender-okhttp3</artifactId>
+            <version>2.0.1</version>
+        </dependency>
+        <dependency>
             <groupId>io.opentracing.contrib.dropwizard</groupId>
             <artifactId>dropwizard-opentracing</artifactId>
             <version>0.2.2</version>

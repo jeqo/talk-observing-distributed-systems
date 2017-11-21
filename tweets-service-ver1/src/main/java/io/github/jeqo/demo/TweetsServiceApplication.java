@@ -1,5 +1,7 @@
 package io.github.jeqo.demo;
 
+import brave.Tracing;
+import brave.opentracing.BraveTracer;
 import io.dropwizard.Application;
 import io.dropwizard.Configuration;
 import io.dropwizard.setup.Environment;
@@ -16,6 +18,9 @@ import io.opentracing.util.GlobalTracer;
 import io.prometheus.client.CollectorRegistry;
 import io.prometheus.client.dropwizard.DropwizardExports;
 import io.prometheus.client.exporter.MetricsServlet;
+import zipkin2.Span;
+import zipkin2.reporter.AsyncReporter;
+import zipkin2.reporter.okhttp3.OkHttpSender;
 
 /**
  *
@@ -44,7 +49,7 @@ public class TweetsServiceApplication extends Application<Configuration> {
         .build();
 
     final Tracer tracer = getTracer();
-    Tracer metricsTracer = io.opentracing.contrib.metrics.Metrics.decorate(tracer, reporter);
+    final Tracer metricsTracer = io.opentracing.contrib.metrics.Metrics.decorate(tracer, reporter);
     GlobalTracer.register(metricsTracer);
     final DropWizardTracer dropWizardTracer = new DropWizardTracer(metricsTracer);
     final ServerTracingFeature serverTracingFeature =
@@ -74,6 +79,28 @@ public class TweetsServiceApplication extends Application<Configuration> {
               1000,   // flush interval in milliseconds
               10000)  /*max buffered Spans*/)
           .getTracer();
+    } catch (Exception e) {
+      e.printStackTrace();
+      return new MockTracer();
+    }
+  }
+
+  private Tracer getZipkinTracer() {
+    try {
+      // Configure a reporter, which controls how often spans are sent
+      //   (the dependency is io.zipkin.reporter2:zipkin-sender-okhttp3)
+      final OkHttpSender sender = OkHttpSender.create("http://tracing-zipkin:9411/api/v2/spans");
+      final AsyncReporter<Span> spanReporter = AsyncReporter.create(sender);
+
+      // Now, create a Brave tracing component with the service name you want to see in Zipkin.
+      //   (the dependency is io.zipkin.brave:brave)
+      final Tracing braveTracing = Tracing.newBuilder()
+          .localServiceName("my-service")
+          .spanReporter(spanReporter)
+          .build();
+
+      // use this to create an OpenTracing Tracer
+      return BraveTracer.create(braveTracing);
     } catch (Exception e) {
       e.printStackTrace();
       return new MockTracer();
