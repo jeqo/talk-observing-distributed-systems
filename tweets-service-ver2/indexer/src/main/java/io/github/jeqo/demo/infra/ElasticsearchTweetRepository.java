@@ -19,7 +19,7 @@ public class ElasticsearchTweetRepository {
     this.restClient = restClient;
   }
 
-  public void index(String key, String value) {
+  void index(String key, String value) {
     try {
       final HttpEntity entity = new NStringEntity(value, ContentType.APPLICATION_JSON);
       final String endpoint = String.format("%s/%s", "/tweets/tweet", key);

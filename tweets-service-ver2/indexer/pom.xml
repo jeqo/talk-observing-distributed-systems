@@ -27,6 +27,16 @@
             <artifactId>rest</artifactId>
             <version>5.5.2</version>
         </dependency>
+        <dependency>
+            <groupId>io.opentracing.contrib</groupId>
+            <artifactId>opentracing-kafka-client</artifactId>
+            <version>0.0.4</version>
+        </dependency>
+        <dependency>
+            <groupId>io.opentracing.contrib</groupId>
+            <artifactId>opentracing-elasticsearch-client</artifactId>
+            <version>0.0.3</version>
+        </dependency>
     </dependencies>
 
     <build>
