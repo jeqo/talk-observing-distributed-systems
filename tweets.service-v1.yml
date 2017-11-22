@@ -4,8 +4,8 @@ services:
   tweets-service:
     build: tweets-service-ver1
     ports:
-      - 8080:18080
-      - 8081
+      - 18080:8080
+      - 18081:8081
   tweets-db:
     build: tweets-service-ver1-db
     environment:

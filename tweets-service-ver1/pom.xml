@@ -16,10 +16,6 @@
             <groupId>io.dropwizard</groupId>
             <artifactId>dropwizard-core</artifactId>
         </dependency>
-        <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
-        </dependency>
 
         <!-- Database Access -->
         <dependency>
@@ -40,10 +36,6 @@
             <groupId>io.opentracing</groupId>
             <artifactId>opentracing-util</artifactId>
         </dependency>
-        <dependency>
-            <groupId>io.opentracing</groupId>
-            <artifactId>opentracing-mock</artifactId>
-        </dependency>
 
         <!-- JaegerTracing - OpenTracing Implementation -->
         <dependency>
@@ -53,8 +45,8 @@
 
         <!-- OpenTracing Instrumentation -->
         <dependency>
-            <groupId>io.opentracing.contrib.dropwizard</groupId>
-            <artifactId>dropwizard-opentracing</artifactId>
+            <groupId>io.opentracing.contrib</groupId>
+            <artifactId>opentracing-jaxrs2</artifactId>
         </dependency>
         <dependency>
             <groupId>io.opentracing.contrib</groupId>

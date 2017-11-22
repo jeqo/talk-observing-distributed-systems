@@ -6,12 +6,11 @@ import io.dropwizard.setup.Environment;
 import io.github.jeqo.demo.domain.TweetRepository;
 import io.github.jeqo.demo.infra.ElasticsearchTweetRepository;
 import io.github.jeqo.demo.rest.TweetsResource;
+import io.opentracing.NoopTracerFactory;
 import io.opentracing.Tracer;
-import io.opentracing.contrib.dropwizard.DropWizardTracer;
-import io.opentracing.contrib.dropwizard.ServerTracingFeature;
 import io.opentracing.contrib.elasticsearch.TracingHttpClientConfigCallback;
+import io.opentracing.contrib.jaxrs2.server.ServerTracingDynamicFeature;
 import io.opentracing.contrib.metrics.prometheus.PrometheusMetricsReporter;
-import io.opentracing.mock.MockTracer;
 import io.opentracing.util.GlobalTracer;
 import io.prometheus.client.CollectorRegistry;
 import io.prometheus.client.dropwizard.DropwizardExports;
@@ -20,6 +19,8 @@ import org.apache.http.HttpHost;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestClientBuilder;
 import org.elasticsearch.client.RestHighLevelClient;
+
+import javax.ws.rs.container.DynamicFeature;
 
 /**
  *
@@ -50,12 +51,9 @@ public class SearchServiceApplication extends Application<Configuration> {
     final Tracer tracer = getTracer();
     final Tracer metricsTracer = io.opentracing.contrib.metrics.Metrics.decorate(tracer, reporter);
     GlobalTracer.register(metricsTracer);
-    final DropWizardTracer dropWizardTracer = new DropWizardTracer(metricsTracer);
-    final ServerTracingFeature serverTracingFeature =
-        new ServerTracingFeature.Builder(dropWizardTracer)
-            .withTraceAnnotations()
-            .build();
-    environment.jersey().register(serverTracingFeature);
+
+    final DynamicFeature tracing = new ServerTracingDynamicFeature.Builder(metricsTracer).build();
+    environment.jersey().register(tracing);
 
     final HttpHost httpHost = new HttpHost("tweets-elasticsearch", 9200);
     final RestClientBuilder restClientBuilder =
@@ -63,7 +61,7 @@ public class SearchServiceApplication extends Application<Configuration> {
     final RestClient restClient = restClientBuilder.build();
     final RestHighLevelClient restHighLevelClient = new RestHighLevelClient(restClient);
     final TweetRepository tweetRepository = new ElasticsearchTweetRepository(restHighLevelClient);
-    final TweetsResource tweetsResource = new TweetsResource(tweetRepository, dropWizardTracer);
+    final TweetsResource tweetsResource = new TweetsResource(tweetRepository);
     environment.jersey().register(tweetsResource);
   }
 
@@ -75,14 +73,14 @@ public class SearchServiceApplication extends Application<Configuration> {
           new com.uber.jaeger.Configuration.SamplerConfiguration("const", 1),
           new com.uber.jaeger.Configuration.ReporterConfiguration(
               true,
-              "tracing-jaeger",
+              "tracing-jaeger-agent",
               6831,
               1000,   // flush interval in milliseconds
               10000)  /*max buffered Spans*/)
           .getTracer();
     } catch (Exception e) {
       e.printStackTrace();
-      return new MockTracer();
+      return NoopTracerFactory.create();
     }
   }
 }

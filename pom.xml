@@ -11,6 +11,7 @@
         <module>tweets-producer</module>
         <module>tweets-service-ver1</module>
         <module>tweets-service-ver2</module>
+        <module>opentracing-intro</module>
     </modules>
     <packaging>pom</packaging>
 
@@ -23,6 +24,7 @@
         <jaegertracing.version>0.21.0</jaegertracing.version>
         <prometheus-java.version>0.0.26</prometheus-java.version>
         <elasticsearch.version>5.5.3</elasticsearch.version>
+        <dropwizard.version>1.2.0-rc6</dropwizard.version>
     </properties>
 
     <dependencyManagement>
@@ -30,7 +32,59 @@
             <dependency>
                 <groupId>io.dropwizard</groupId>
                 <artifactId>dropwizard-core</artifactId>
-                <version>1.1.4</version>
+                <version>${dropwizard.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.dropwizard</groupId>
+                <artifactId>dropwizard-util</artifactId>
+                <version>${dropwizard.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>com.google.code.findbugs</groupId>
+                        <artifactId>jsr305</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>io.dropwizard</groupId>
+                <artifactId>dropwizard-logging</artifactId>
+                <version>${dropwizard.version}</version>
+                <exclusions>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>io.dropwizard</groupId>
+                <artifactId>dropwizard-jersey</artifactId>
+                <version>${dropwizard.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.hibernate</groupId>
+                        <artifactId>hibernate-validator</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>io.dropwizard</groupId>
+                <artifactId>dropwizard-servlets</artifactId>
+                <version>${dropwizard.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.slf4j</groupId>
+                        <artifactId>slf4j-api</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <dependency>
+                <groupId>io.dropwizard.metrics</groupId>
+                <artifactId>metrics-servlets</artifactId>
+                <version>3.2.5</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>joda-time</groupId>
+                        <artifactId>joda-time</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
 
             <dependency>
@@ -70,6 +124,12 @@
                 <groupId>org.apache.kafka</groupId>
                 <artifactId>kafka-clients</artifactId>
                 <version>0.11.0.1</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.slf4j</groupId>
+                        <artifactId>slf4j-log4j12</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
 
             <dependency>
@@ -81,12 +141,6 @@
                 <groupId>org.elasticsearch.client</groupId>
                 <artifactId>elasticsearch-rest-high-level-client</artifactId>
                 <version>5.6.2</version>
-            </dependency>
-
-            <dependency>
-                <groupId>ch.qos.logback</groupId>
-                <artifactId>logback-classic</artifactId>
-                <version>1.2.3</version>
             </dependency>
 
             <!-- OpenTracing API -->
@@ -115,9 +169,9 @@
 
             <!-- OpenTracing Instrumentation -->
             <dependency>
-                <groupId>io.opentracing.contrib.dropwizard</groupId>
-                <artifactId>dropwizard-opentracing</artifactId>
-                <version>0.2.2</version>
+                <groupId>io.opentracing.contrib</groupId>
+                <artifactId>opentracing-jaxrs2</artifactId>
+                <version>0.0.9</version>
             </dependency>
             <dependency>
                 <groupId>io.opentracing.contrib</groupId>
@@ -133,6 +187,12 @@
                 <groupId>io.opentracing.contrib</groupId>
                 <artifactId>opentracing-kafka-client</artifactId>
                 <version>0.0.4</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.apache.kafka</groupId>
+                        <artifactId>kafka_2.12</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
                 <groupId>io.opentracing.contrib</groupId>
@@ -145,6 +205,12 @@
                 <groupId>io.prometheus</groupId>
                 <artifactId>simpleclient_dropwizard</artifactId>
                 <version>${prometheus-java.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>io.dropwizard.metrics</groupId>
+                        <artifactId>metrics-core</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
                 <groupId>io.prometheus</groupId>
@@ -155,6 +221,12 @@
                 <groupId>io.opentracing.contrib</groupId>
                 <artifactId>opentracing-metrics-prometheus</artifactId>
                 <version>0.1.4</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>io.prometheus</groupId>
+                        <artifactId>simpleclient</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
 
             <!-- Testing -->

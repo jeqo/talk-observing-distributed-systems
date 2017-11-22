@@ -16,5 +16,7 @@ services:
       - GROUP_ID=tweets-producer-v2
   tweets-source-kafka:
     image: jeqo/apache-kafka:0.11.0.0-2.11
+    environment:
+      - ZOOKEEPER_CONNECT=tweets-source-zookeeper:2181
   tweets-source-zookeeper:
     image: jeqo/apache-kafka-zookeeper:0.11.0.0-2.11

@@ -7,15 +7,16 @@ import io.github.jeqo.demo.domain.TweetsRepository;
 import io.github.jeqo.demo.domain.TweetsService;
 import io.github.jeqo.demo.infra.JooqPostgresTweetsRepository;
 import io.github.jeqo.demo.rest.TweetsResource;
+import io.opentracing.NoopTracerFactory;
 import io.opentracing.Tracer;
-import io.opentracing.contrib.dropwizard.DropWizardTracer;
-import io.opentracing.contrib.dropwizard.ServerTracingFeature;
+import io.opentracing.contrib.jaxrs2.server.ServerTracingDynamicFeature;
 import io.opentracing.contrib.metrics.prometheus.PrometheusMetricsReporter;
-import io.opentracing.mock.MockTracer;
 import io.opentracing.util.GlobalTracer;
 import io.prometheus.client.CollectorRegistry;
 import io.prometheus.client.dropwizard.DropwizardExports;
 import io.prometheus.client.exporter.MetricsServlet;
+
+import javax.ws.rs.container.DynamicFeature;
 
 /**
  *
@@ -34,32 +35,32 @@ public class TweetsServiceApplication extends Application<Configuration> {
   public void run(Configuration configuration, Environment environment) throws Exception {
     final CollectorRegistry collectorRegistry = new CollectorRegistry();
     collectorRegistry.register(new DropwizardExports(environment.metrics()));
-    environment.admin()
-        .addServlet("metrics", new MetricsServlet(collectorRegistry))
-        .addMapping("/metrics");
 
-    final PrometheusMetricsReporter reporter = PrometheusMetricsReporter.newMetricsReporter()
-        .withCollectorRegistry(collectorRegistry)
-        .withConstLabel("service", getName())
-        .build();
+    final PrometheusMetricsReporter reporter =
+        PrometheusMetricsReporter.newMetricsReporter()
+            .withCollectorRegistry(collectorRegistry)
+            .withConstLabel("service", getName())
+            .build();
 
     final Tracer tracer = getTracer();
     final Tracer metricsTracer = io.opentracing.contrib.metrics.Metrics.decorate(tracer, reporter);
     GlobalTracer.register(metricsTracer);
-    final DropWizardTracer dropWizardTracer = new DropWizardTracer(metricsTracer);
-    final ServerTracingFeature serverTracingFeature =
-        new ServerTracingFeature.Builder(dropWizardTracer)
-            .withTraceAnnotations()
-            .build();
-    environment.jersey().register(serverTracingFeature);
 
     final String jdbcUrl = "jdbc:tracing:postgresql://tweets-db/postgres";
     final String jdbcUsername = "postgres";
     final String jdbcPassword = "example";
     final TweetsRepository tweetsRepository = new JooqPostgresTweetsRepository(jdbcUrl, jdbcUsername, jdbcPassword);
     final TweetsService tweetsService = new TweetsService(tweetsRepository);
-    final TweetsResource tweetsResource = new TweetsResource(tweetsService, dropWizardTracer);
+    final TweetsResource tweetsResource = new TweetsResource(tweetsService);
+
     environment.jersey().register(tweetsResource);
+
+    final DynamicFeature tracing = new ServerTracingDynamicFeature.Builder(metricsTracer).build();
+    environment.jersey().register(tracing);
+
+    environment.admin()
+        .addServlet("metrics", new MetricsServlet(collectorRegistry))
+        .addMapping("/metrics");
   }
 
   private Tracer getTracer() {
@@ -69,14 +70,14 @@ public class TweetsServiceApplication extends Application<Configuration> {
           new com.uber.jaeger.Configuration.SamplerConfiguration("const", 1),
           new com.uber.jaeger.Configuration.ReporterConfiguration(
               true,
-              "tracing-jaeger",
+              "tracing-jaeger-agent",
               6831,
               1000,   // flush interval in milliseconds
               10000)  /*max buffered Spans*/)
           .getTracer();
     } catch (Exception e) {
       e.printStackTrace();
-      return new MockTracer();
+      return NoopTracerFactory.create();
     }
   }
 
@@ -98,7 +99,7 @@ public class TweetsServiceApplication extends Application<Configuration> {
       return BraveTracer.create(braveTracing);
     } catch (Exception e) {
       e.printStackTrace();
-      return new MockTracer();
+      return NoopTracerFactory.create();
     }
   }*/
 }

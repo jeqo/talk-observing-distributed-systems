@@ -2,11 +2,13 @@
 # APM Tracing Service
 version: '3'
 services:
-  tracing-jaeger:
+  tracing-jaeger-agent:
     image: jaegertracing/jaeger-agent:latest
     command: [
       "/go/bin/agent-linux",
       "--collector.host-port=tracing-jaeger-collector:14267"]
+    ports:
+      - 6831:6831/udp
   tracing-jaeger-collector:
     image: jaegertracing/jaeger-collector:latest
     command: [

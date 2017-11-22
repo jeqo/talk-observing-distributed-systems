@@ -8,12 +8,11 @@ import io.github.jeqo.demo.domain.TweetEventRepository;
 import io.github.jeqo.demo.domain.TweetsService;
 import io.github.jeqo.demo.infra.KafkaTweetEventRepository;
 import io.github.jeqo.demo.rest.TweetsResource;
+import io.opentracing.NoopTracerFactory;
 import io.opentracing.Tracer;
-import io.opentracing.contrib.dropwizard.DropWizardTracer;
-import io.opentracing.contrib.dropwizard.ServerTracingFeature;
+import io.opentracing.contrib.jaxrs2.server.ServerTracingDynamicFeature;
 import io.opentracing.contrib.kafka.TracingKafkaProducer;
 import io.opentracing.contrib.metrics.prometheus.PrometheusMetricsReporter;
-import io.opentracing.mock.MockTracer;
 import io.opentracing.util.GlobalTracer;
 import io.prometheus.client.CollectorRegistry;
 import io.prometheus.client.dropwizard.DropwizardExports;
@@ -24,6 +23,7 @@ import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.LongSerializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 
+import javax.ws.rs.container.DynamicFeature;
 import java.util.Properties;
 
 /**
@@ -55,12 +55,9 @@ public class WorkerServiceApplication extends Application<Configuration> {
     final Tracer tracer = getTracer();
     final Tracer metricsTracer = io.opentracing.contrib.metrics.Metrics.decorate(tracer, reporter);
     GlobalTracer.register(metricsTracer);
-    final DropWizardTracer dropWizardTracer = new DropWizardTracer(metricsTracer);
-    final ServerTracingFeature serverTracingFeature =
-        new ServerTracingFeature.Builder(dropWizardTracer)
-            .withTraceAnnotations()
-            .build();
-    environment.jersey().register(serverTracingFeature);
+
+    final DynamicFeature tracing = new ServerTracingDynamicFeature.Builder(metricsTracer).build();
+    environment.jersey().register(tracing);
 
     final Properties producerConfigs = new Properties();
     producerConfigs.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "tweets-kafka:9092");
@@ -73,7 +70,7 @@ public class WorkerServiceApplication extends Application<Configuration> {
     final ObjectMapper objectMapper = environment.getObjectMapper();
     final TweetEventRepository tweetRepository = new KafkaTweetEventRepository(tracingKafkaProducer, objectMapper);
     final TweetsService tweetsService = new TweetsService(tweetRepository);
-    final TweetsResource tweetsResource = new TweetsResource(tweetsService, dropWizardTracer);
+    final TweetsResource tweetsResource = new TweetsResource(tweetsService);
     environment.jersey().register(tweetsResource);
   }
 
@@ -84,14 +81,14 @@ public class WorkerServiceApplication extends Application<Configuration> {
           new com.uber.jaeger.Configuration.SamplerConfiguration("const", 1),
           new com.uber.jaeger.Configuration.ReporterConfiguration(
               true,
-              "tracing-jaeger",
+              "tracing-jaeger-agent",
               6831,
               1000,   // flush interval in milliseconds
               10000)  /*max buffered Spans*/)
           .getTracer();
     } catch (Exception e) {
       e.printStackTrace();
-      return new MockTracer();
+      return NoopTracerFactory.create();
     }
   }
 }
