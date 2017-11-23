@@ -9,6 +9,8 @@ services:
       "--collector.host-port=tracing-jaeger-collector:14267"]
     ports:
       - 6831:6831/udp
+    depends_on:
+      - tracing-jaeger-collector
   tracing-jaeger-collector:
     image: jaegertracing/jaeger-collector:latest
     command: [
@@ -16,6 +18,8 @@ services:
       "--span-storage.type=elasticsearch",
       "--dependency-storage.data-frequency=1m0s",
       "--es.server-urls=http://tracing-elasticsearch:9200"]
+    depends_on:
+      - tracing-elasticsearch
   tracing-jaeger-query:
     build: tracing/jaeger-query
     command: [
@@ -26,6 +30,8 @@ services:
       "--query.static-files=/go/src/jaeger-ui-build/build/"]
     ports:
       - 16686:16686
+    depends_on:
+      - tracing-elasticsearch
   tracing-elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:5.6.2
     environment:

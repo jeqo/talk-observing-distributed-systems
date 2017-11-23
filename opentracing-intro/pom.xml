@@ -28,6 +28,22 @@
             <groupId>com.uber.jaeger</groupId>
             <artifactId>jaeger-core</artifactId>
         </dependency>
+
+        <!--<dependency>
+            <groupId>io.zipkin.brave</groupId>
+            <artifactId>brave</artifactId>
+            <version>4.8.0</version>
+        </dependency>
+        <dependency>
+            <groupId>io.zipkin.reporter2</groupId>
+            <artifactId>zipkin-sender-okhttp3</artifactId>
+            <version>2.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>io.opentracing.brave</groupId>
+            <artifactId>brave-opentracing</artifactId>
+            <version>0.20.0</version>
+        </dependency>-->
     </dependencies>
 
 </project>

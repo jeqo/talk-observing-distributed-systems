@@ -17,9 +17,25 @@ and are part of a transaction.
 OpenTracing project tries to solve this offering a vendor-neutral
 API to define traces.
 
+OpenTracing is a project inspired on a Google paper called Dapper.
+Dapper is the name of the distributed tracing infrastructure used
+in almost every system deployed in Google.
+
+Dapper mentioned that there where 2 approaches to instrument their 
+applications: One called Black-box oriented that will consist
+on observe calls (like a sniffer) and understand how components 
+communicate. 
+The other one was a White-Box approach also called Annotation-based
+that will require instrumente their implementations. 
+
+They choose the annotation-based approach, but to avoid changing 
+their implementations, they focus on instrumenting only RPC libraries
+and frameworks at the beginning. They find out that actually achieving 
+this will give them enough understading about how traces get distributed.
+
 ### Lab 01: OpenTracing API - Tracer and Spans
 
-Let's see how it works:
+Enough theory, let's see how it works:
 
 1. Add OpenTracing API:
 
@@ -379,3 +395,4 @@ And we check the trace:
 
 ![Jaeger UI Trace](images/ot2.png)
 
+### Lab 05: Add Tracing for Hello World distributed (?)
