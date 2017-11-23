@@ -7,7 +7,10 @@ import io.github.jeqo.demo.infra.HelloTranslationRepository;
 import io.github.jeqo.demo.rest.HelloTranslationResource;
 import io.opentracing.NoopTracerFactory;
 import io.opentracing.Tracer;
+import io.opentracing.contrib.jaxrs2.server.ServerTracingDynamicFeature;
 import io.opentracing.util.GlobalTracer;
+
+import javax.ws.rs.container.DynamicFeature;
 
 /**
  * Decoupled, independent Translation Service. To be Called by Hello World distributed Service
@@ -26,6 +29,9 @@ public class TranslationServiceApplication extends Application<Configuration> {
     // Tracing Instrumentation
     final Tracer tracer = getTracer();
     GlobalTracer.register(tracer);
+
+    final DynamicFeature tracing = new ServerTracingDynamicFeature.Builder(tracer).build();
+    environment.jersey().register(tracing);
 
     // Prepare Translation Repository
     final HelloTranslationRepository repository = new HelloTranslationRepository();

@@ -21,7 +21,7 @@ public class HelloWorldResource {
   }
 
   @GET
-  @Traced(operationName = "sayHi")
+  @Traced(operationName = "say_hi")
   @Path("{name}")
   public String sayHi(@PathParam("name") String name,
                       @QueryParam("lang") String lang) {

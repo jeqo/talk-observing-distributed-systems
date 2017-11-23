@@ -8,8 +8,11 @@ import io.github.jeqo.demo.rest.HelloWorldResource;
 import io.opentracing.NoopTracerFactory;
 import io.opentracing.Tracer;
 import io.opentracing.contrib.apache.http.client.TracingHttpClientBuilder;
+import io.opentracing.contrib.jaxrs2.server.ServerTracingDynamicFeature;
 import io.opentracing.util.GlobalTracer;
 import org.apache.http.client.HttpClient;
+
+import javax.ws.rs.container.DynamicFeature;
 
 /**
  * Hello World Distributed version with Translation Service contained as a Service. In this version
@@ -26,6 +29,9 @@ public class HelloWorldServiceApp extends Application<Configuration> {
     // Preparing Tracer
     final Tracer tracer = getTracer();
     GlobalTracer.register(tracer); //Register on Global Scope
+
+    final DynamicFeature tracing = new ServerTracingDynamicFeature.Builder(tracer).build();
+    environment.jersey().register(tracing);
 
     // Preparing Http Client
     final String baseUrl = "http://hello-translation-service:8080/translation";

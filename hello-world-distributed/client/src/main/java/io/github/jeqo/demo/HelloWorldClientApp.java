@@ -8,8 +8,11 @@ import io.github.jeqo.demo.rest.GreetingService;
 import io.opentracing.NoopTracerFactory;
 import io.opentracing.Tracer;
 import io.opentracing.contrib.apache.http.client.TracingHttpClientBuilder;
+import io.opentracing.contrib.jaxrs2.server.ServerTracingDynamicFeature;
 import io.opentracing.util.GlobalTracer;
 import org.apache.http.client.HttpClient;
+
+import javax.ws.rs.container.DynamicFeature;
 
 /**
  *
@@ -25,6 +28,9 @@ public class HelloWorldClientApp extends Application<Configuration> {
     //
     final Tracer tracer = getTracer();
     GlobalTracer.register(tracer);
+
+    final DynamicFeature tracing = new ServerTracingDynamicFeature.Builder(tracer).build();
+    environment.jersey().register(tracing);
 
     //
     final HttpClient httpClient = new TracingHttpClientBuilder().build();
