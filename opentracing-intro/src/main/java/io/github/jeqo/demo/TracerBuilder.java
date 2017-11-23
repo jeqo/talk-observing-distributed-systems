@@ -6,7 +6,7 @@ import io.opentracing.Tracer;
 /**
  *
  */
-public class TracerBuilder {
+class TracerBuilder {
 
   private static Tracer getNoopTracer() {
     return NoopTracerFactory.create();

@@ -17,16 +17,6 @@
             <groupId>io.dropwizard</groupId>
             <artifactId>dropwizard-core</artifactId>
         </dependency>
-
-        <!-- Metrics Instrumentation Prometheus -->
-        <dependency>
-            <groupId>io.prometheus</groupId>
-            <artifactId>simpleclient_dropwizard</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.prometheus</groupId>
-            <artifactId>simpleclient_servlet</artifactId>
-        </dependency>
     </dependencies>
 
     <build>

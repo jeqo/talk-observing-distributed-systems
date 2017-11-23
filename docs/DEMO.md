@@ -25,6 +25,8 @@ Sounds good?
 
 ### Lab 01: Tweets Service v1
 
+![v1](images/tweets-v1.png)
+
 ### Lab 02: Generate Write Load
 
 ### Lab 03: Evaluate Load
@@ -35,5 +37,8 @@ Sounds good?
 
 ### Lab 06: Tweets Service v2
 
+![v1](images/tweets-v2.png)
 
+### Lab 07: Evaluate Load
 
+### Lab 08: Generate Query Load
