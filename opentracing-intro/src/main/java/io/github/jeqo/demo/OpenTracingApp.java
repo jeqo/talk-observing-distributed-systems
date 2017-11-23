@@ -22,7 +22,7 @@ import static java.lang.System.out;
 public class OpenTracingApp {
 
   public static void main(String[] args) throws InterruptedException {
-    final Tracer tracer = getTracer();//NoopTracerFactory.create();
+    final Tracer tracer = getTracer("opentracing-app-1");//NoopTracerFactory.create();
     GlobalTracer.register(tracer);
 
     final ActiveSpan span = tracer.buildSpan("main").startActive();
@@ -37,7 +37,6 @@ public class OpenTracingApp {
 
     waitABit();
 
-
     span.close();
 
     anotherOperation(spanContext);
@@ -49,18 +48,12 @@ public class OpenTracingApp {
 
     anotherProcess(map);
 
-    Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-      try {
-        Thread.sleep(1000);
-        out.println("Shouting down ...");
-      } catch (InterruptedException e) {
-        e.printStackTrace();
-      }
-    }));
+    Thread.sleep(2000);
+    out.println("Shouting down ...");
   }
 
   private static void anotherProcess(Map<String, String> map) throws InterruptedException {
-    final Tracer tracer = getTracer();
+    final Tracer tracer = getTracer("opentracing-app-2");
     TextMap carrier = new TextMapExtractAdapter(map);
     SpanContext spanContext = tracer.extract(Format.Builtin.TEXT_MAP, carrier);
 
@@ -113,10 +106,10 @@ public class OpenTracingApp {
   }
 
 
-  private static Tracer getTracer() {
+  private static Tracer getTracer(String serviceName) {
     try {
       return new com.uber.jaeger.Configuration(
-          "opentracing-app",
+          serviceName,
           new com.uber.jaeger.Configuration.SamplerConfiguration("const", 1), //100%
           new com.uber.jaeger.Configuration.ReporterConfiguration(
               true,
