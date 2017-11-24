@@ -40,23 +40,13 @@ public class TweetsResource {
   @Traced(operationName = "add_tweet") //Tracing instrumentation
   @Timed //Metrics instrumentation
   public Response addTweet(TweetRepresentation representation) {
-    /*final ActiveSpan activeSpan =
-        GlobalTracer.get()
-            .buildSpan("addTweet")
-            .withTag("user", representation.getUser().getScreenName())
-            .startActive();*/
     try {
       final Tweet tweet = Tweet.buildFromRepresentation(representation);
       tweetsService.addTweet(tweet);
-      final AckRepresentation entity = new AckRepresentation();
-      return Response.ok(entity).build();
+      return Response.ok().build();
     } catch (Exception e) {
-//      activeSpan.setTag(Tags.ERROR.getKey(), true);
-//      activeSpan.setTag("exception", e.getMessage());
-      final AckRepresentation entity = new AckRepresentation(e.getMessage());
-      return Response.serverError().entity(entity).build();
-    } finally {
-//      activeSpan.close();
+      e.printStackTrace();
+      return Response.serverError().entity(e.getMessage()).build();
     }
   }
 
@@ -64,11 +54,6 @@ public class TweetsResource {
   @Traced(operationName = "find_tweets") //Tracing instrumentation
   @Timed //Metrics instrumentation
   public Response findTweets() {
-    /*final ActiveSpan activeSpan =
-        GlobalTracer.get()
-            .buildSpan("findTweets")
-            .asChildOf(span)
-            .startActive();*/
     try {
       final List<TweetRepresentation> tweetRepresentations =
           tweetsService.findTweets(new TweetsQuery())
@@ -79,12 +64,8 @@ public class TweetsResource {
       tweetsRepresentation.setTweets(tweetRepresentations);
       return Response.ok(tweetsRepresentation).build();
     } catch (Exception e) {
-//      activeSpan.setTag(Tags.ERROR.getKey(), true);
-//      activeSpan.setTag("exception", e.getMessage());
-      final AckRepresentation entity = new AckRepresentation(e.getMessage());
-      return Response.serverError().entity(entity).build();
-    } finally {
-//      activeSpan.close();
+      e.printStackTrace();
+      return Response.serverError().entity(e.getMessage()).build();
     }
   }
 }

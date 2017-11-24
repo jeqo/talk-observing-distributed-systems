@@ -78,7 +78,7 @@ public class JooqPostgresTweetsRepository implements TweetsRepository {
                     .columns(HASHTAGS.TEXT, HASHTAGS.TWEET_ID)
                     .values(hashtag.text(), tweetId)
                     .execute());
-      } catch (SQLException e) {
+      } catch (Exception e) {
         span.setTag(Tags.ERROR.getKey(), true);
         Map<String, Object> fields = new HashMap<>();
         fields.put("error.kind", e.getClass().getName());
