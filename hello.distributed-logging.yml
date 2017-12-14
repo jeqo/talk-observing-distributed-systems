@@ -1,6 +1,6 @@
 version: '3'
 services:
-  hello-world-client:
+  hello-client:
     build: hello-world-distributed/client
     ports:
       - 8090:8080
@@ -8,7 +8,7 @@ services:
       driver: "fluentd"
       options:
         fluentd-address: localhost:24224
-  hello-world-service:
+  hello-service:
     build: hello-world-distributed/service
     ports:
       - 8080

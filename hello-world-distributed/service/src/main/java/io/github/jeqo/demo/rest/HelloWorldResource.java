@@ -24,6 +24,6 @@ public class HelloWorldResource {
   public String hello(@PathParam("name") String name,
                       @QueryParam("lang") String lang) {
     final String hello = translationClient.translateHello(lang);
-    return hello + " " + name + "\n";
+    return hello + " " + name;
   }
 }

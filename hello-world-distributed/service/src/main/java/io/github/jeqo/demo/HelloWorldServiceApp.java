@@ -21,11 +21,10 @@ public class HelloWorldServiceApp extends Application<Configuration> {
 
   public void run(Configuration configuration, Environment environment) {
     // Preparing Http Client
-    final String baseUrl = "http://hello-translation-service:8080/translation";
     final HttpClient httpClient = HttpClientBuilder.create().build();
 
     // Dependency Injection
-    final HelloTranslationClient translationClient = new HelloTranslationClient(httpClient, baseUrl);
+    final HelloTranslationClient translationClient = new HelloTranslationClient(httpClient);
     final HelloWorldResource resource = new HelloWorldResource(translationClient);
 
     // Register Hello World Resource

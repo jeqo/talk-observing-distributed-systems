@@ -15,7 +15,7 @@ import java.io.InputStream;
  */
 public class HelloWorldClient {
   private static final Logger LOGGER = LoggerFactory.getLogger(HelloWorldClient.class);
-  private static final String BASE_URL = "http://hello-world-service:8080/hello";
+  private static final String BASE_URL = "http://hello-service:8080/hello";
 
   private final HttpClient httpClient;
 

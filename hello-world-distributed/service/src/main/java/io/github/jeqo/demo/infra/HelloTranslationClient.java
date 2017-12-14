@@ -13,13 +13,12 @@ import java.nio.charset.Charset;
  *
  */
 public class HelloTranslationClient {
+  private static final String baseUrl = "http://hello-translation-service:8080/translation";
 
   private final HttpClient httpClient;
-  private final String baseUrl;
 
-  public HelloTranslationClient(HttpClient httpClient, String baseUrl) {
+  public HelloTranslationClient(HttpClient httpClient) {
     this.httpClient = httpClient;
-    this.baseUrl = baseUrl;
   }
 
   public String translateHello(String lang) {
