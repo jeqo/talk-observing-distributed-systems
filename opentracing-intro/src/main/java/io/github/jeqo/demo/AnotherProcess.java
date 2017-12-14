@@ -1,53 +1,36 @@
 package io.github.jeqo.demo;
 
 import io.opentracing.ActiveSpan;
+import io.opentracing.References;
+import io.opentracing.SpanContext;
 import io.opentracing.Tracer;
 import io.opentracing.propagation.Format;
 import io.opentracing.propagation.TextMap;
-import io.opentracing.propagation.TextMapInjectAdapter;
+import io.opentracing.propagation.TextMapExtractAdapter;
 import io.opentracing.tag.Tags;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
  *
  */
-class Process {
-
+public class AnotherProcess {
   private final Tracer tracer;
 
-  Process(Tracer tracer) {
+  public AnotherProcess(Tracer tracer) {
     this.tracer = tracer;
   }
 
-  Map<String, String> run() {
+  public void run(Map<String, String> map) {
+    TextMap carrier = new TextMapExtractAdapter(map);
+    SpanContext spanContext = tracer.extract(Format.Builtin.TEXT_MAP, carrier);
+
     ActiveSpan span = tracer.buildSpan("main")
         .withTag(Tags.SPAN_KIND.getKey(), Tags.SPAN_KIND_SERVER)
+        .addReference(References.FOLLOWS_FROM, spanContext)
         .startActive();
 
     waitABit();
-
-    childOperation();
-
-    span.close();
-
-
-    Map<String, String> map = new HashMap<>();
-    TextMap carrier = new TextMapInjectAdapter(map);
-    tracer.inject(span.context(), Format.Builtin.TEXT_MAP, carrier);
-
-    return map;
-  }
-
-  private void childOperation() {
-    ActiveSpan span = tracer.buildSpan("child")
-        .withTag(Tags.SPAN_KIND.getKey(), Tags.SPAN_KIND_CLIENT)
-        .startActive();
-
-    waitABit();
-
-    span.log("SOmething happened");
 
     span.close();
   }

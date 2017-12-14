@@ -1,5 +1,6 @@
 package io.github.jeqo.demo.rest;
 
+import com.codahale.metrics.annotation.Timed;
 import io.github.jeqo.demo.domain.TranslationService;
 
 import javax.ws.rs.GET;
@@ -22,6 +23,7 @@ public class GreetingResource {
 
   @GET
   @Path("{name}")
+  @Timed
   public Response hello(@PathParam("name") String name,
                         @QueryParam("lang") String lang) {
     final String hello = translationService.translate(lang);

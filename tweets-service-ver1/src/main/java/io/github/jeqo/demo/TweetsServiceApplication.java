@@ -32,7 +32,7 @@ public class TweetsServiceApplication extends Application<Configuration> {
     return "tweets-service-v1";
   }
 
-  public void run(Configuration configuration, Environment environment) throws Exception {
+  public void run(Configuration configuration, Environment environment) {
     final CollectorRegistry collectorRegistry = new CollectorRegistry();
     collectorRegistry.register(new DropwizardExports(environment.metrics()));
 
