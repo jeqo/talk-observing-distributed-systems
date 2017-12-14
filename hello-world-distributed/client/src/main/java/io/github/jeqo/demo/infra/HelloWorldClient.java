@@ -15,7 +15,7 @@ import java.io.InputStream;
  */
 public class HelloWorldClient {
   private static final Logger LOGGER = LoggerFactory.getLogger(HelloWorldClient.class);
-  private static final String BASE_URL = "http://hello-world-service:8080/hello-world";
+  private static final String BASE_URL = "http://hello-world-service:8080/hello";
 
   private final HttpClient httpClient;
 
@@ -25,7 +25,7 @@ public class HelloWorldClient {
     this.httpClient = httpClient;
   }
 
-  public String sayHi(String name, String lang) {
+  public String sayHello(String name, String lang) {
     LOGGER.info("Calling Hello World Service - Operation `sayHi` - name=" + name);
 
     try {

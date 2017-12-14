@@ -33,7 +33,7 @@ public class HelloTranslationClient {
       return IOUtils.toString(content, Charset.defaultCharset());
     } catch (IOException e) {
       e.printStackTrace();
-      return "Hello";
+      return "Hello"; //Fallback
     }
   }
 }
