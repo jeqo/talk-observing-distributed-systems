@@ -29,7 +29,7 @@
             <artifactId>jaeger-core</artifactId>
         </dependency>
 
-        <!--<dependency>
+        <dependency>
             <groupId>io.zipkin.brave</groupId>
             <artifactId>brave</artifactId>
             <version>4.8.0</version>
@@ -42,8 +42,8 @@
         <dependency>
             <groupId>io.opentracing.brave</groupId>
             <artifactId>brave-opentracing</artifactId>
-            <version>0.20.0</version>
-        </dependency>-->
+            <version>0.22.1</version>
+        </dependency>
     </dependencies>
 
 </project>
