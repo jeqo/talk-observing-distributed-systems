@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>io.github.jeqo.talk</groupId>
-    <artifactId>talk-distributed-tracing-noslides</artifactId>
+    <artifactId>talk-observing-distributed-systems</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <modules>
         <module>hello-world-monolith</module>
@@ -15,8 +15,8 @@
     </modules>
     <packaging>pom</packaging>
 
-    <name>talk-distributed-tracing-noslides</name>
-    <url>https://github.com/jeqo/talk-distributed-tracing-noslides</url>
+    <name>talk-observing-distributed-systems</name>
+    <url>https://github.com/jeqo/talk-observing-distributed-systems</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
