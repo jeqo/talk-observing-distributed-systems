@@ -47,7 +47,7 @@ class Process {
 
     waitABit();
 
-    span.log("SOmething happened");
+    span.log("Something happened");
 
     span.close();
   }

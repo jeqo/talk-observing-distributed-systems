@@ -17,7 +17,7 @@ import java.util.Map;
 public class AnotherProcess {
   private final Tracer tracer;
 
-  public AnotherProcess(Tracer tracer) {
+  AnotherProcess(Tracer tracer) {
     this.tracer = tracer;
   }
 

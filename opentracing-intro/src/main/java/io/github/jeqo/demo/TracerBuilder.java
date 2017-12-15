@@ -13,10 +13,6 @@ import zipkin2.reporter.okhttp3.OkHttpSender;
  */
 class TracerBuilder {
 
-  private static Tracer getNoopTracer() {
-    return NoopTracerFactory.create();
-  }
-
   static Tracer getJaegerTracer(String serviceName) {
     try {
       return new com.uber.jaeger.Configuration(
