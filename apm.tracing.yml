@@ -2,8 +2,30 @@
 # APM Tracing Service
 version: '3'
 services:
+  tracing-jaeger-collector:
+    image: jaegertracing/jaeger-collector:1.0.0
+    command: [
+      "/go/bin/collector-linux",
+      "--span-storage.type=cassandra",
+      "--cassandra.keyspace=jaeger_v1_dc1",
+      "--cassandra.servers=cassandra"]
+    depends_on:
+      - tracing-jaeger-cassandra
+  tracing-jaeger-query:
+    build: tracing/jaeger-query
+    command: [
+      "/go/bin/query-linux",
+      "--span-storage.type=cassandra",
+      "--cassandra.keyspace=jaeger_v1_dc1",
+      "--cassandra.servers=cassandra",
+      "--query.static-files=/go/src/jaeger-ui-build/build/"]
+    ports:
+      - 16686:16686
+      - 16687
+    depends_on:
+      - tracing-jaeger-cassandra
   tracing-jaeger-agent:
-    image: jaegertracing/jaeger-agent:latest
+    image: jaegertracing/jaeger-agent:1.0.0
     command: [
       "/go/bin/agent-linux",
       "--collector.host-port=tracing-jaeger-collector:14267"]
@@ -11,35 +33,20 @@ services:
       - 6831:6831/udp
     depends_on:
       - tracing-jaeger-collector
-  tracing-jaeger-collector:
-    image: jaegertracing/jaeger-collector:latest
-    command: [
-      "/go/bin/collector-linux",
-      "--span-storage.type=elasticsearch",
-      "--dependency-storage.data-frequency=1m0s",
-      "--es.server-urls=http://tracing-elasticsearch:9200"]
-    depends_on:
-      - tracing-elasticsearch
-  tracing-jaeger-query:
-    build: tracing/jaeger-query
-    command: [
-      "/go/bin/query-linux",
-      "--es.server-urls=http://tracing-elasticsearch:9200",
-      "--span-storage.type=elasticsearch",
-      "--dependency-storage.data-frequency=1m0s",
-      "--query.static-files=/go/src/jaeger-ui-build/build/"]
+
+  tracing-jaeger-cassandra:
+    container_name: cassandra
+    image: cassandra:3.9
     ports:
-      - 16686:16686
+      - 9042:9042
+
+  tracing-jaeger-cassandra-schema:
+    image: jaegertracing/jaeger-cassandra-schema:1.0.0
     depends_on:
-      - tracing-elasticsearch
-  tracing-elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:5.6.2
-    environment:
-      - discovery.type=single-node
-      - xpack.security.enabled=false
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-  tracing-dependencies:
+      - tracing-jaeger-cassandra
+
+  tracing-jaeger-dependencies:
     image: jaegertracing/spark-dependencies:latest
     environment:
-      - STORAGE=elasticsearch
-      - ES_NODES=http://tracing-elasticsearch:9200
+      - STORAGE=cassandra
+      - CASSANDRA_CONTACT_POINTS=docker-vm

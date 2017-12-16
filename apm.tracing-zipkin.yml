@@ -19,7 +19,7 @@ services:
         - 9480:80
       depends_on:
         - tracing-zipkin
-  tracing-dependencies:
+  tracing-zipkin-dependencies:
     image: openzipkin/zipkin-dependencies
     entrypoint: crond -f
     environment:
