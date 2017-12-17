@@ -4,7 +4,7 @@ Presented at:
 
 * [NoSlidesConf 2017](http://www.noslidesconf.net/)
 
-* [PeruJUG Meetup](https://www.meetup.com/es-ES/Peru-Java-User-Group/events/245246354/) [[Slides](https://speakerdeck.com/jeqo/observando-sistemas-distribuidos)]
+* [PeruJUG Meetup](https://www.meetup.com/es-ES/Peru-Java-User-Group/events/245246354/) [[Slides](https://speakerdeck.com/jeqo/observando-sistemas-distribuidos-perujug)]
 
 **Observability** is the ability to understand what is going on with your systems, not 
 only from the point of view of how the system looks from outside, but been able to
