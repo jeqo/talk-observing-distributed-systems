@@ -1,7 +1,7 @@
 # global config
 global:
-  scrape_interval:     10s # Set the scrape interval to every 15 seconds. Default is every 1 minute.
-  evaluation_interval: 10s # Evaluate rules every 15 seconds. The default is every 1 minute.
+  scrape_interval:     5s # Set the scrape interval to every 15 seconds. Default is every 1 minute.
+  evaluation_interval: 5s # Evaluate rules every 15 seconds. The default is every 1 minute.
 rule_files:
 scrape_configs:
   # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
@@ -10,9 +10,9 @@ scrape_configs:
       - targets: ['localhost:9090']
 
   # Hello World
-  - job_name: 'hello-world-monolith'
+  - job_name: 'hello-monolith'
     static_configs:
-      - targets: ['hello-world-monolith:8081']
+      - targets: ['hello-monolith:8081']
 
   # Tweets Demo
   - job_name: 'tweets-service-v1'

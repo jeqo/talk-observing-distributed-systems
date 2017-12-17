@@ -32,7 +32,6 @@ class Process {
 
     span.close();
 
-
     Map<String, String> map = new HashMap<>();
     TextMap carrier = new TextMapInjectAdapter(map);
     tracer.inject(span.context(), Format.Builtin.TEXT_MAP, carrier);
@@ -42,12 +41,12 @@ class Process {
 
   private void childOperation() {
     ActiveSpan span = tracer.buildSpan("child")
-        .withTag(Tags.SPAN_KIND.getKey(), Tags.SPAN_KIND_CLIENT)
+        .withTag("transactionId", "1")
         .startActive();
 
     waitABit();
 
-    span.log("SOmething happened");
+    span.log("Something happened");
 
     span.close();
   }

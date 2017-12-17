@@ -1,7 +1,6 @@
 package io.github.jeqo.demo.rest;
 
 import io.github.jeqo.demo.infra.HelloTranslationRepository;
-import io.opentracing.contrib.jaxrs2.server.Traced;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -22,7 +21,6 @@ public class HelloTranslationResource {
 
   @GET
   @Path("hello/{lang}")
-  @Traced(operationName = "translate")
   public Response translate(@PathParam("lang") String lang) {
     final String helloTranslated = repository.translate(lang);
     return Response.ok(helloTranslated).build();

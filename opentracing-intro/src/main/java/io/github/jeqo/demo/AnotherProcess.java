@@ -17,7 +17,7 @@ import java.util.Map;
 public class AnotherProcess {
   private final Tracer tracer;
 
-  public AnotherProcess(Tracer tracer) {
+  AnotherProcess(Tracer tracer) {
     this.tracer = tracer;
   }
 
@@ -26,7 +26,7 @@ public class AnotherProcess {
     SpanContext spanContext = tracer.extract(Format.Builtin.TEXT_MAP, carrier);
 
     ActiveSpan span = tracer.buildSpan("main")
-        .withTag(Tags.SPAN_KIND.getKey(), Tags.SPAN_KIND_SERVER)
+        .withTag(Tags.SPAN_KIND.getKey(), Tags.SPAN_KIND_CLIENT)
         .addReference(References.FOLLOWS_FROM, spanContext)
         .startActive();
 

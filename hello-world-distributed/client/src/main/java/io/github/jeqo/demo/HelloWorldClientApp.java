@@ -5,14 +5,8 @@ import io.dropwizard.Configuration;
 import io.dropwizard.setup.Environment;
 import io.github.jeqo.demo.infra.HelloWorldClient;
 import io.github.jeqo.demo.rest.GreetingService;
-import io.opentracing.NoopTracerFactory;
-import io.opentracing.Tracer;
-import io.opentracing.contrib.apache.http.client.TracingHttpClientBuilder;
-import io.opentracing.contrib.jaxrs2.server.ServerTracingDynamicFeature;
-import io.opentracing.util.GlobalTracer;
 import org.apache.http.client.HttpClient;
-
-import javax.ws.rs.container.DynamicFeature;
+import org.apache.http.impl.client.HttpClientBuilder;
 
 /**
  *
@@ -24,39 +18,15 @@ public class HelloWorldClientApp extends Application<Configuration> {
   }
 
   @Override
-  public void run(Configuration configuration, Environment environment) throws Exception {
-    //
-    final Tracer tracer = getTracer();
-    GlobalTracer.register(tracer);
+  public void run(Configuration configuration, Environment environment) {
+    // Instantiate Http Client
+    final HttpClient httpClient = HttpClientBuilder.create().build();
 
-    final DynamicFeature tracing = new ServerTracingDynamicFeature.Builder(tracer).build();
-    environment.jersey().register(tracing);
-
-    //
-    final HttpClient httpClient = new TracingHttpClientBuilder().build();
-
+    // Dependency Injection
     final HelloWorldClient helloWorldClient = new HelloWorldClient(httpClient);
     final GreetingService greetingService = new GreetingService(helloWorldClient);
 
-    //
+    // Register Greeting Service
     environment.jersey().register(greetingService);
-  }
-
-  private Tracer getTracer() {
-    try {
-      return new com.uber.jaeger.Configuration(
-          "hello-world-client",
-          new com.uber.jaeger.Configuration.SamplerConfiguration("const", 1), //100%
-          new com.uber.jaeger.Configuration.ReporterConfiguration(
-              true,
-              "tracing-jaeger-agent",
-              6831,
-              1000,   // flush interval in milliseconds
-              10000)  /*max buffered Spans*/)
-          .getTracer();
-    } catch (Exception e) {
-      e.printStackTrace();
-      return NoopTracerFactory.create();
-    }
   }
 }

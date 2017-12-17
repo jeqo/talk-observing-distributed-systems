@@ -23,7 +23,7 @@
                             <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>io.github.jeqo.demo.TranslationServiceApplication</mainClass>
+                            <mainClass>io.github.jeqo.demo.TranslationServiceApp</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

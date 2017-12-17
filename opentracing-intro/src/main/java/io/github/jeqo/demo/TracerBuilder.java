@@ -1,16 +1,17 @@
 package io.github.jeqo.demo;
 
+import brave.Tracing;
+import brave.opentracing.BraveTracer;
 import io.opentracing.NoopTracerFactory;
 import io.opentracing.Tracer;
+import zipkin2.Span;
+import zipkin2.reporter.AsyncReporter;
+import zipkin2.reporter.okhttp3.OkHttpSender;
 
 /**
  *
  */
 class TracerBuilder {
-
-  private static Tracer getNoopTracer() {
-    return NoopTracerFactory.create();
-  }
 
   static Tracer getJaegerTracer(String serviceName) {
     try {
@@ -30,7 +31,7 @@ class TracerBuilder {
     }
   }
 
-  /*static Tracer getZipkinTracer(String serviceName) {
+  static Tracer getZipkinTracer(String serviceName) {
     try {
       // Configure a reporter, which controls how often spans are sent
       //   (the dependency is io.zipkin.reporter2:zipkin-sender-okhttp3)
@@ -51,5 +52,5 @@ class TracerBuilder {
       e.printStackTrace();
       return NoopTracerFactory.create();
     }
-  }*/
+  }
 }

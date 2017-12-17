@@ -1,0 +1,32 @@
+version: '3'
+services:
+  tracing-zipkin-mysql:
+    image: openzipkin/zipkin-mysql
+  tracing-zipkin:
+    image: openzipkin/zipkin
+    environment:
+      - STORAGE_TYPE=mysql
+      - MYSQL_HOST=tracing-zipkin-mysql
+    ports:
+      - 9411:9411
+    depends_on:
+      - tracing-zipkin-mysql
+  tracing-zipkin-ui:
+      image: openzipkin/zipkin-ui
+      environment:
+        - ZIPKIN_BASE_URL=http://tracing-zipkin:9411
+      ports:
+        - 9480:80
+      depends_on:
+        - tracing-zipkin
+  tracing-zipkin-dependencies:
+    image: openzipkin/zipkin-dependencies
+    entrypoint: crond -f
+    environment:
+      - STORAGE_TYPE=mysql
+      - MYSQL_HOST=tracing-zipkin-mysql
+      - MYSQL_USER=zipkin
+      - MYSQL_PASS=zipkin
+      - JAVA_OPTS=-verbose:gc -Xms1G -Xmx1G
+    depends_on:
+      - tracing-zipkin-mysql

@@ -27,7 +27,7 @@ public class GreetingResource {
   public Response hello(@PathParam("name") String name,
                         @QueryParam("lang") String lang) {
     final String hello = translationService.translate(lang);
-    final String entity = hello + " " + name;
+    final String entity = hello + " " + name + "\n";
     return Response.ok(entity).build();
   }
 }

@@ -1,5 +1,7 @@
 package io.github.jeqo.demo;
 
+import io.opentracing.Tracer;
+
 import java.util.Map;
 
 import static java.lang.System.out;
@@ -10,13 +12,14 @@ import static java.lang.System.out;
 public class OpenTracingApp {
 
   public static void main(String[] args) throws InterruptedException {
-    Process process = new Process(TracerBuilder.getJaegerTracer("Process"));
-    Map<String, String> map = process.run();
+    final Tracer tracer = TracerBuilder.getJaegerTracer("Process");
+    final Process process = new Process(tracer);
+    final Map<String, String> map = process.run();
 
     out.println(map);
 
-    AnotherProcess anotherProcess =
-        new AnotherProcess(TracerBuilder.getJaegerTracer("AnotherProcess"));
+    final Tracer anotherTracer = TracerBuilder.getJaegerTracer("AnotherProcess");
+    final AnotherProcess anotherProcess = new AnotherProcess(anotherTracer);
     anotherProcess.run(map);
 
     Thread.sleep(2000);
