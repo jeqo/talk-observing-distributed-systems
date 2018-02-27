@@ -12,6 +12,7 @@
         <module>tweets-service-ver1</module>
         <module>tweets-service-ver2</module>
         <module>opentracing-intro</module>
+        <module>tracing-util</module>
     </modules>
     <packaging>pom</packaging>
 

@@ -1,5 +1,6 @@
 package io.github.jeqo.demo.rest;
 
+import com.codahale.metrics.annotation.Metered;
 import io.github.jeqo.demo.domain.Tweet;
 import io.github.jeqo.demo.domain.TweetsService;
 import io.opentracing.contrib.jaxrs2.server.Traced;
@@ -12,7 +13,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 /**
- *
+ * Tweets HTTP Endpoint v2
  */
 @Path("v2/tweets")
 @Produces(MediaType.APPLICATION_JSON)
@@ -27,6 +28,7 @@ public class TweetsResource {
 
   @POST
   @Traced(operationName = "add_tweet")
+  @Metered
   public Response addTweet(TweetRepresentation representation) {
       final Tweet tweet = Tweet.buildFromRepresentation(representation);
       tweetsService.addTweet(tweet);

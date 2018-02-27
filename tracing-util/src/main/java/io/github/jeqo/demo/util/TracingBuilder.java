@@ -1,4 +1,4 @@
-package io.github.jeqo.demo;
+package io.github.jeqo.demo.util;
 
 import brave.Tracing;
 import brave.opentracing.BraveTracer;
@@ -11,9 +11,8 @@ import zipkin2.reporter.okhttp3.OkHttpSender;
 /**
  *
  */
-class TracerBuilder {
-
-  static Tracer getTracer(String tracingProvider, String serviceName) {
+public class TracingBuilder {
+  public static Tracer getTracer(String tracingProvider, String serviceName) {
     switch (tracingProvider) {
       case "JAEGER":
         return getJaegerTracer(serviceName);
@@ -24,14 +23,14 @@ class TracerBuilder {
     }
   }
 
-  static Tracer getJaegerTracer(String serviceName) {
+  private static Tracer getJaegerTracer(String serviceName) {
     try {
       return new com.uber.jaeger.Configuration(
           serviceName,
           new com.uber.jaeger.Configuration.SamplerConfiguration("const", 1),
           new com.uber.jaeger.Configuration.ReporterConfiguration(
               true,
-              "docker-vm",
+              "tracing-jaeger-agent",
               6831,
               1000,   // flush interval in milliseconds
               10000)  /*max buffered Spans*/)
@@ -42,7 +41,7 @@ class TracerBuilder {
     }
   }
 
-  static Tracer getZipkinTracer(String serviceName) {
+  private static Tracer getZipkinTracer(String serviceName) {
     try {
       // Configure a reporter, which controls how often spans are sent
       //   (the dependency is io.zipkin.reporter2:zipkin-sender-okhttp3)

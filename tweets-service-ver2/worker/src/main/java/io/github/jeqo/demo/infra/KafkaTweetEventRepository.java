@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 import java.util.concurrent.ExecutionException;
 
 /**
- *
+ * Kafka Producer Repository
  */
 public class KafkaTweetEventRepository implements TweetEventRepository {
   private static final Logger LOGGER = LoggerFactory.getLogger(KafkaTweetEventRepository.class);

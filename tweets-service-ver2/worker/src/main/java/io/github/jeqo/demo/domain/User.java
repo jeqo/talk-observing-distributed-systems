@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.jeqo.demo.rest.TweetRepresentation;
 
 /**
- *
+ * User Domain Model
  */
 public class User {
   private final Long id;

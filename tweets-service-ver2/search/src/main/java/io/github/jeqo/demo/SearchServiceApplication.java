@@ -37,6 +37,7 @@ public class SearchServiceApplication extends Application<Configuration> {
   }
 
   public void run(Configuration configuration, Environment environment) throws Exception {
+    // Metrics Instrumentation
     final CollectorRegistry collectorRegistry = new CollectorRegistry();
     collectorRegistry.register(new DropwizardExports(environment.metrics()));
     environment.admin()
@@ -48,6 +49,7 @@ public class SearchServiceApplication extends Application<Configuration> {
         .withConstLabel("service", getName())
         .build();
 
+    // Tracing Instrumentation
     final Tracer tracer = getTracer();
     final Tracer metricsTracer = io.opentracing.contrib.metrics.Metrics.decorate(tracer, reporter);
     GlobalTracer.register(metricsTracer);
@@ -55,16 +57,17 @@ public class SearchServiceApplication extends Application<Configuration> {
     final DynamicFeature tracing = new ServerTracingDynamicFeature.Builder(metricsTracer).build();
     environment.jersey().register(tracing);
 
+    // Service Instantiation
     final HttpHost httpHost = new HttpHost("tweets-elasticsearch", 9200);
     final RestClientBuilder restClientBuilder =
-        RestClient.builder(httpHost).setHttpClientConfigCallback(new TracingHttpClientConfigCallback(metricsTracer));
+        RestClient.builder(httpHost)
+            .setHttpClientConfigCallback(new TracingHttpClientConfigCallback(metricsTracer));
     final RestClient restClient = restClientBuilder.build();
     final RestHighLevelClient restHighLevelClient = new RestHighLevelClient(restClient);
     final TweetRepository tweetRepository = new ElasticsearchTweetRepository(restHighLevelClient);
     final TweetsResource tweetsResource = new TweetsResource(tweetRepository);
     environment.jersey().register(tweetsResource);
   }
-
 
   private Tracer getTracer() {
     try {

@@ -1,7 +1,7 @@
 package io.github.jeqo.demo.domain;
 
 /**
- *
+ * Tweets Services
  */
 public class TweetsService {
 

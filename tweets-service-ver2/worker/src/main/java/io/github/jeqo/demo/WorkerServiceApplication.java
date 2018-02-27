@@ -41,6 +41,7 @@ public class WorkerServiceApplication extends Application<Configuration> {
   }
 
   public void run(Configuration configuration, Environment environment) throws Exception {
+    // Metrics Instrumentation
     final CollectorRegistry collectorRegistry = new CollectorRegistry();
     collectorRegistry.register(new DropwizardExports(environment.metrics()));
     environment.admin()
@@ -52,6 +53,7 @@ public class WorkerServiceApplication extends Application<Configuration> {
         .withConstLabel("service", getName())
         .build();
 
+    // Tracing Instrumentation
     final Tracer tracer = getTracer();
     final Tracer metricsTracer = io.opentracing.contrib.metrics.Metrics.decorate(tracer, reporter);
     GlobalTracer.register(metricsTracer);
@@ -59,6 +61,7 @@ public class WorkerServiceApplication extends Application<Configuration> {
     final DynamicFeature tracing = new ServerTracingDynamicFeature.Builder(metricsTracer).build();
     environment.jersey().register(tracing);
 
+    // Kafka Client Configuration
     final Properties producerConfigs = new Properties();
     producerConfigs.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "tweets-kafka:9092");
     producerConfigs.put(ProducerConfig.ACKS_CONFIG, "all");
@@ -67,6 +70,8 @@ public class WorkerServiceApplication extends Application<Configuration> {
         new KafkaProducer<>(producerConfigs, new LongSerializer(), new StringSerializer());
     final Producer<Long, String> tracingKafkaProducer =
         new TracingKafkaProducer<>(kafkaProducer, metricsTracer);
+
+    // Service Instantiation
     final ObjectMapper objectMapper = environment.getObjectMapper();
     final TweetEventRepository tweetRepository = new KafkaTweetEventRepository(tracingKafkaProducer, objectMapper);
     final TweetsService tweetsService = new TweetsService(tweetRepository);

@@ -1,5 +1,7 @@
 package io.github.jeqo.demo;
 
+import com.typesafe.config.Config;
+import com.typesafe.config.ConfigFactory;
 import io.dropwizard.Application;
 import io.dropwizard.Configuration;
 import io.dropwizard.setup.Environment;
@@ -7,6 +9,7 @@ import io.github.jeqo.demo.domain.TweetsRepository;
 import io.github.jeqo.demo.domain.TweetsService;
 import io.github.jeqo.demo.infra.JooqPostgresTweetsRepository;
 import io.github.jeqo.demo.rest.TweetsResource;
+import io.github.jeqo.demo.util.TracingBuilder;
 import io.opentracing.NoopTracerFactory;
 import io.opentracing.Tracer;
 import io.opentracing.contrib.jaxrs2.server.ServerTracingDynamicFeature;
@@ -22,6 +25,8 @@ import javax.ws.rs.container.DynamicFeature;
  *
  */
 public class TweetsServiceApplication extends Application<Configuration> {
+
+  private final Config config = ConfigFactory.load();
 
   public static void main(String[] args) throws Exception {
     new TweetsServiceApplication().run(args);
@@ -44,12 +49,13 @@ public class TweetsServiceApplication extends Application<Configuration> {
             .build();
 
     // TRACING INSTRUMENTATION
-    final Tracer tracer = getTracer();
+    final String tracingProvider = config.getString("tweets.tracing-provider");
+    final Tracer tracer = TracingBuilder.getTracer(tracingProvider, getName());
     final Tracer metricsTracer = io.opentracing.contrib.metrics.Metrics.decorate(tracer, reporter);
     GlobalTracer.register(metricsTracer);
 
     // SERVICE INSTANTIATION
-    final String jdbcUrl = "jdbc:tracing:postgresql://tweets-db/postgres";
+    final String jdbcUrl = config.getString("tweets.db-url"); //"jdbc:tracing:postgresql://tweets-db/postgres";
     final String jdbcUsername = "postgres";
     final String jdbcPassword = "example";
     final TweetsRepository tweetsRepository = new JooqPostgresTweetsRepository(jdbcUrl, jdbcUsername, jdbcPassword);
