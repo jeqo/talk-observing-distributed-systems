@@ -34,8 +34,6 @@ public class ElasticsearchTweetRepository implements TweetRepository {
       searchSourceBuilder.query(simpleQueryStringBuilder);
       searchSourceBuilder.size(500);
 
-      //LOGGER.info("Elasticsearch query: {}", searchSourceBuilder.toString());
-
       final SearchRequest searchRequest = new SearchRequest();
       searchRequest.indices("tweets");
       searchRequest.types("tweet");

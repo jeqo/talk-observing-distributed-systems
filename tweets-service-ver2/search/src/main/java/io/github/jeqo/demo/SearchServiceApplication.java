@@ -1,12 +1,14 @@
 package io.github.jeqo.demo;
 
+import com.typesafe.config.Config;
+import com.typesafe.config.ConfigFactory;
 import io.dropwizard.Application;
 import io.dropwizard.Configuration;
 import io.dropwizard.setup.Environment;
 import io.github.jeqo.demo.domain.TweetRepository;
 import io.github.jeqo.demo.infra.ElasticsearchTweetRepository;
 import io.github.jeqo.demo.rest.TweetsResource;
-import io.opentracing.NoopTracerFactory;
+import io.github.jeqo.demo.util.TracingBuilder;
 import io.opentracing.Tracer;
 import io.opentracing.contrib.elasticsearch.TracingHttpClientConfigCallback;
 import io.opentracing.contrib.jaxrs2.server.ServerTracingDynamicFeature;
@@ -27,6 +29,8 @@ import javax.ws.rs.container.DynamicFeature;
  */
 public class SearchServiceApplication extends Application<Configuration> {
 
+  private final Config config = ConfigFactory.load();
+
   public static void main(String[] args) throws Exception {
     new SearchServiceApplication().run(args);
   }
@@ -36,7 +40,7 @@ public class SearchServiceApplication extends Application<Configuration> {
     return "tweets-search-v2";
   }
 
-  public void run(Configuration configuration, Environment environment) throws Exception {
+  public void run(Configuration configuration, Environment environment) {
     // Metrics Instrumentation
     final CollectorRegistry collectorRegistry = new CollectorRegistry();
     collectorRegistry.register(new DropwizardExports(environment.metrics()));
@@ -50,7 +54,8 @@ public class SearchServiceApplication extends Application<Configuration> {
         .build();
 
     // Tracing Instrumentation
-    final Tracer tracer = getTracer();
+    final String tracingProvider = config.getString("tweets.tracing-provider");
+    final Tracer tracer = TracingBuilder.getTracer(tracingProvider, getName());
     final Tracer metricsTracer = io.opentracing.contrib.metrics.Metrics.decorate(tracer, reporter);
     GlobalTracer.register(metricsTracer);
 
@@ -69,21 +74,4 @@ public class SearchServiceApplication extends Application<Configuration> {
     environment.jersey().register(tweetsResource);
   }
 
-  private Tracer getTracer() {
-    try {
-      return new com.uber.jaeger.Configuration(
-          getName(),
-          new com.uber.jaeger.Configuration.SamplerConfiguration("const", 1),
-          new com.uber.jaeger.Configuration.ReporterConfiguration(
-              true,
-              "tracing-jaeger-agent",
-              6831,
-              1000,   // flush interval in milliseconds
-              10000)  /*max buffered Spans*/)
-          .getTracer();
-    } catch (Exception e) {
-      e.printStackTrace();
-      return NoopTracerFactory.create();
-    }
-  }
 }
