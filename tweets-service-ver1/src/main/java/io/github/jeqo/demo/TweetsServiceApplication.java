@@ -33,6 +33,7 @@ public class TweetsServiceApplication extends Application<Configuration> {
   }
 
   public void run(Configuration configuration, Environment environment) {
+    // METRICS INSTRUMENTATION
     final CollectorRegistry collectorRegistry = new CollectorRegistry();
     collectorRegistry.register(new DropwizardExports(environment.metrics()));
 
@@ -42,10 +43,12 @@ public class TweetsServiceApplication extends Application<Configuration> {
             .withConstLabel("service", getName())
             .build();
 
+    // TRACING INSTRUMENTATION
     final Tracer tracer = getTracer();
     final Tracer metricsTracer = io.opentracing.contrib.metrics.Metrics.decorate(tracer, reporter);
     GlobalTracer.register(metricsTracer);
 
+    // SERVICE INSTANTIATION
     final String jdbcUrl = "jdbc:tracing:postgresql://tweets-db/postgres";
     final String jdbcUsername = "postgres";
     final String jdbcPassword = "example";
@@ -55,9 +58,9 @@ public class TweetsServiceApplication extends Application<Configuration> {
 
     environment.jersey().register(tweetsResource);
 
+    // INSTRUMENTATION INSTANTIATION
     final DynamicFeature tracing = new ServerTracingDynamicFeature.Builder(metricsTracer).build();
     environment.jersey().register(tracing);
-
     environment.admin()
         .addServlet("metrics", new MetricsServlet(collectorRegistry))
         .addMapping("/metrics");

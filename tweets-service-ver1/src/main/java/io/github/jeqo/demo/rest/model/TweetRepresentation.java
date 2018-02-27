@@ -1,4 +1,4 @@
-package io.github.jeqo.demo.rest;
+package io.github.jeqo.demo.rest.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- *
+ * Tweet JSON Model
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class TweetRepresentation {

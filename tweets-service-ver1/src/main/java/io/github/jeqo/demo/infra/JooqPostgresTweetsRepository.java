@@ -1,6 +1,5 @@
 package io.github.jeqo.demo.infra;
 
-import io.github.jeqo.demo.domain.FindAllTweets;
 import io.github.jeqo.demo.domain.Tweet;
 import io.github.jeqo.demo.domain.TweetsRepository;
 import io.github.jeqo.demo.domain.User;
@@ -93,7 +92,7 @@ public class JooqPostgresTweetsRepository implements TweetsRepository {
   }
 
   @Override
-  public List<Tweet> find(FindAllTweets query) {
+  public List<Tweet> find() {
     try (ActiveSpan span =
              GlobalTracer.get()
                  .buildSpan("find")
