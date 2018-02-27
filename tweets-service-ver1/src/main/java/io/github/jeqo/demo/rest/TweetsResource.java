@@ -2,18 +2,18 @@ package io.github.jeqo.demo.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import io.github.jeqo.demo.domain.Tweet;
-import io.github.jeqo.demo.domain.TweetsQuery;
 import io.github.jeqo.demo.domain.TweetsService;
-import io.opentracing.contrib.jaxrs2.server.Traced;
+import io.opentracing.Scope;
+import io.opentracing.util.GlobalTracer;
+import jdk.nashorn.internal.objects.Global;
+import org.eclipse.microprofile.opentracing.Traced;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Request;
 import javax.ws.rs.core.Response;
 import java.util.List;
 
@@ -29,18 +29,15 @@ public class TweetsResource {
 
   private final TweetsService tweetsService;
 
-  @Context
-  private Request request = null;
-
   public TweetsResource(TweetsService tweetsService) {
     this.tweetsService = tweetsService;
   }
 
   @POST
-  @Traced(operationName = "add_tweet") //Tracing instrumentation
+  @Traced //(operationName = "addTweet") //Tracing instrumentation
   @Timed //Metrics instrumentation
   public Response addTweet(TweetRepresentation representation) {
-    try {
+    try (Scope scope = GlobalTracer.get().buildSpan("addTweet").startActive(true)) {
       final Tweet tweet = Tweet.buildFromRepresentation(representation);
       tweetsService.addTweet(tweet);
       return Response.ok().build();
@@ -51,12 +48,12 @@ public class TweetsResource {
   }
 
   @GET
-  @Traced(operationName = "find_tweets") //Tracing instrumentation
+  @Traced //(operationName = "findTweets") //Tracing instrumentation
   @Timed //Metrics instrumentation
   public Response findTweets() {
-    try {
+    try (Scope scope = GlobalTracer.get().buildSpan("findTweets").startActive(true)) {
       final List<TweetRepresentation> tweetRepresentations =
-          tweetsService.findTweets(new TweetsQuery())
+          tweetsService.findTweets()
               .stream()
               .map(Tweet::printRepresentation)
               .collect(toList());

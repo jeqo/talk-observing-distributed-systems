@@ -65,11 +65,6 @@ public class Tweet {
                 .collect(Collectors.toSet()));
   }
 
-  public Tweet addHashtag(Hashtag hashtag) {
-    hashtagSet.add(hashtag);
-    return this;
-  }
-
   public static Tweet buildFromRecord(Record record) {
     final User user = User.buildFromRecord(record);
     return
@@ -79,6 +74,11 @@ public class Tweet {
             user,
             record.get(TWEETS.TEXT),
             record.get(TWEETS.IS_RETWEET));
+  }
+
+  public Tweet addHashtag(Hashtag hashtag) {
+    hashtagSet.add(hashtag);
+    return this;
   }
 
   public TweetRepresentation printRepresentation() {
@@ -126,7 +126,7 @@ public class Tweet {
   public static class Hashtag {
     private final String text;
 
-    public Hashtag(String text) {
+    Hashtag(String text) {
       this.text = text;
     }
 
@@ -134,7 +134,11 @@ public class Tweet {
       return new Hashtag(hashtagRepresentation.getText());
     }
 
-    public TweetRepresentation.EntitiesRepresentation.HashtagRepresentation printRepresentation() {
+    public static Hashtag buildFromRecord(Record record) {
+      return new Hashtag(record.get(HASHTAGS.TEXT));
+    }
+
+    TweetRepresentation.EntitiesRepresentation.HashtagRepresentation printRepresentation() {
       final TweetRepresentation.EntitiesRepresentation.HashtagRepresentation hashtagRepresentation =
           new TweetRepresentation.EntitiesRepresentation.HashtagRepresentation();
       hashtagRepresentation.setText(text);
@@ -143,10 +147,6 @@ public class Tweet {
 
     public String text() {
       return text;
-    }
-
-    public static Hashtag buildFromRecord(Record record) {
-      return new Hashtag(record.get(HASHTAGS.TEXT));
     }
   }
 }

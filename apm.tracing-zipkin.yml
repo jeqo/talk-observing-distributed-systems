@@ -7,10 +7,12 @@ services:
     environment:
       - STORAGE_TYPE=mysql
       - MYSQL_HOST=tracing-zipkin-mysql
+      - KAFKA_ZOOKEEPER=kafka-zookeeper
     ports:
       - 9411:9411
     depends_on:
       - tracing-zipkin-mysql
+      - tracing-zipkin-kafka-zookeeper
   tracing-zipkin-ui:
       image: openzipkin/zipkin-ui
       environment:
@@ -30,3 +32,11 @@ services:
       - JAVA_OPTS=-verbose:gc -Xms1G -Xmx1G
     depends_on:
       - tracing-zipkin-mysql
+  tracing-zipkin-kafka-zookeeper:
+    image: openzipkin/zipkin-kafka
+    environment:
+      # corresponds to your docker machine and your producer's broker list
+      # - KAFKA_ADVERTISED_HOST_NAME=192.168.99.100
+    ports:
+      - 2181:2181
+      - 9092:9092

@@ -10,6 +10,7 @@
     </parent>
 
     <artifactId>tweets-service-ver1</artifactId>
+    <packaging>jar</packaging>
 
     <dependencies>
         <dependency>
@@ -26,6 +27,29 @@
             <groupId>org.jooq</groupId>
             <artifactId>jooq</artifactId>
         </dependency>
+
+        <!-- Configuration -->
+        <dependency>
+            <groupId>com.typesafe</groupId>
+            <artifactId>config</artifactId>
+        </dependency>
+
+        <!-- Skywalking Tracing -->
+        <!--<dependency>-->
+        <!--<groupId>org.skywalking</groupId>-->
+        <!--<artifactId>apm-agent</artifactId>-->
+        <!--<version>3.2.6-2017</version>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+        <!--<groupId>org.skywalking</groupId>-->
+        <!--<artifactId>apm-jetty-server-9.x-plugin</artifactId>-->
+        <!--<version>3.2.6-2017</version>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+        <!--<groupId>org.skywalking</groupId>-->
+        <!--<artifactId>apm-postgresql-8.x-plugin</artifactId>-->
+        <!--<version>3.2.6-2017</version>-->
+        <!--</dependency>-->
 
         <!-- OpenTracing API -->
         <dependency>
@@ -66,6 +90,23 @@
             <groupId>io.opentracing.contrib</groupId>
             <artifactId>opentracing-metrics-prometheus</artifactId>
         </dependency>
+
+        <!-- Zipkin instrumentation -->
+        <dependency>
+            <groupId>io.zipkin.brave</groupId>
+            <artifactId>brave</artifactId>
+            <version>4.16.2</version>
+        </dependency>
+        <dependency>
+            <groupId>io.zipkin.reporter2</groupId>
+            <artifactId>zipkin-sender-kafka11</artifactId>
+            <version>2.3.3</version>
+        </dependency>
+        <dependency>
+            <groupId>io.opentracing.brave</groupId>
+            <artifactId>brave-opentracing</artifactId>
+            <version>0.28.0</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -80,7 +121,13 @@
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
                             <mainClass>io.github.jeqo.demo.TweetsServiceApplication</mainClass>
+
                         </manifest>
+                        <manifestEntries>
+                            <Premain-Class>org.skywalking.apm.agent.SkyWalkingAgent</Premain-Class>
+                            <Can-Redefine-Class>true</Can-Redefine-Class>
+                            <Can-Retransform-Classes>true</Can-Retransform-Classes>
+                        </manifestEntries>
                     </archive>
                 </configuration>
             </plugin>
@@ -101,10 +148,8 @@
                     </execution>
                 </executions>
             </plugin>
-
         </plugins>
     </build>
-
 
     <profiles>
         <profile>

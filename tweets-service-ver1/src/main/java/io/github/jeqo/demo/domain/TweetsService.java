@@ -17,7 +17,7 @@ public class TweetsService {
     tweetsRepository.put(tweet);
   }
 
-  public List<Tweet> findTweets(TweetsQuery query) {
-    return tweetsRepository.find(query);
+  public List<Tweet> findTweets() {
+    return tweetsRepository.find();
   }
 }

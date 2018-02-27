@@ -3,7 +3,7 @@
 version: '3'
 services:
   tracing-jaeger-collector:
-    image: jaegertracing/jaeger-collector:1.0.0
+    image: jaegertracing/jaeger-collector #:1.2.0
     command: [
       "/go/bin/collector-linux",
       "--span-storage.type=cassandra",
@@ -12,20 +12,23 @@ services:
     depends_on:
       - tracing-jaeger-cassandra
   tracing-jaeger-query:
-    build: tracing/jaeger-query
+    image: jaegertracing/jaeger-query #:1.2.0
+    ports:
+      - 16686:16686
     command: [
       "/go/bin/query-linux",
       "--span-storage.type=cassandra",
       "--cassandra.keyspace=jaeger_v1_dc1",
       "--cassandra.servers=cassandra",
-      "--query.static-files=/go/src/jaeger-ui-build/build/"]
+      "--query.static-files=/go/jaeger-ui/"]
+  tracing-jaeger-cassandra:
     ports:
       - 16686:16686
       - 16687
     depends_on:
       - tracing-jaeger-cassandra
   tracing-jaeger-agent:
-    image: jaegertracing/jaeger-agent:1.0.0
+    image: jaegertracing/jaeger-agent #:1.2.0
     command: [
       "/go/bin/agent-linux",
       "--collector.host-port=tracing-jaeger-collector:14267"]
@@ -41,7 +44,7 @@ services:
       - 9042:9042
 
   tracing-jaeger-cassandra-schema:
-    image: jaegertracing/jaeger-cassandra-schema:1.0.0
+    image: jaegertracing/jaeger-cassandra-schema #:1.2.0
     depends_on:
       - tracing-jaeger-cassandra
 
