@@ -6,6 +6,7 @@ import io.opentracing.NoopTracerFactory;
 import io.opentracing.Tracer;
 import zipkin2.Span;
 import zipkin2.reporter.AsyncReporter;
+import zipkin2.reporter.kafka11.KafkaSender;
 import zipkin2.reporter.okhttp3.OkHttpSender;
 
 /**
@@ -46,6 +47,7 @@ public class TracingBuilder {
       // Configure a reporter, which controls how often spans are sent
       //   (the dependency is io.zipkin.reporter2:zipkin-sender-okhttp3)
       final OkHttpSender sender = OkHttpSender.create("http://docker-vm:9411/api/v2/spans");
+      //final KafkaSender sender = KafkaSender.create("tracing-zipkin-kafka:9092").toBuilder().autoBuild();
       final AsyncReporter<Span> spanReporter = AsyncReporter.create(sender);
 
       // Now, create a Brave tracing component with the service name you want to see in Zipkin.

@@ -3,7 +3,7 @@ package io.github.jeqo.demo.rest;
 import com.codahale.metrics.annotation.Metered;
 import io.github.jeqo.demo.domain.Tweet;
 import io.github.jeqo.demo.domain.TweetsService;
-import io.opentracing.contrib.jaxrs2.server.Traced;
+import org.eclipse.microprofile.opentracing.Traced;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
