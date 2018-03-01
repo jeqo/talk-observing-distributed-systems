@@ -1,4 +1,4 @@
-# Talk: Where did my message goes? Distributed Tracing with OpenTracing
+# Talk: Observing Distributed Systems
 
 Presented at:
 
