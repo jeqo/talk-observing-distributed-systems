@@ -11,7 +11,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
- *
+ * Tweet Domain Model
  */
 public class Tweet {
   private final Long id;

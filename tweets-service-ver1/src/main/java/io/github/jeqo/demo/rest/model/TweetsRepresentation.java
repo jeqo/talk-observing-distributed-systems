@@ -1,9 +1,9 @@
-package io.github.jeqo.demo.rest;
+package io.github.jeqo.demo.rest.model;
 
 import java.util.List;
 
 /**
- *
+ * Tweets JSON Model
  */
 public class TweetsRepresentation {
   private List<TweetRepresentation> tweets;

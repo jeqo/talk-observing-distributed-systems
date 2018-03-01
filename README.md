@@ -4,7 +4,7 @@ Presented at:
 
 * [NoSlidesConf 2017](http://www.noslidesconf.net/)
 
-* [PeruJUG Meetup](https://www.meetup.com/es-ES/Peru-Java-User-Group/events/245246354/) [[Slides](https://speakerdeck.com/jeqo/observando-sistemas-distribuidos)]
+* [PeruJUG Meetup](https://www.meetup.com/es-ES/Peru-Java-User-Group/events/245246354/) [[Slides](https://speakerdeck.com/jeqo/observando-sistemas-distribuidos-perujug)]
 
 * [GDG Oslo Meetup](https://www.meetup.com/es-ES/GDG-Cloud-Norway/events/247282228) [[Slides](https://speakerdeck.com/jeqo/increasing-observability-with-distributed-tracing)]
 

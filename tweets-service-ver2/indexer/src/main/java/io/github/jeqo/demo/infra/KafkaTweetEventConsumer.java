@@ -12,7 +12,7 @@ import org.apache.kafka.clients.consumer.ConsumerRecords;
 import java.util.Collections;
 
 /**
- *
+ * Kafka Consumer to Index Tweets on Elasticsearch
  */
 public class KafkaTweetEventConsumer implements Runnable {
 

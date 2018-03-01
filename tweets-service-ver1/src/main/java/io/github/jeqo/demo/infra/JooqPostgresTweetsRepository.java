@@ -1,6 +1,5 @@
 package io.github.jeqo.demo.infra;
 
-import io.github.jeqo.demo.domain.FindAllTweets;
 import io.github.jeqo.demo.domain.Tweet;
 import io.github.jeqo.demo.domain.TweetsRepository;
 import io.github.jeqo.demo.domain.User;
@@ -43,14 +42,15 @@ public class JooqPostgresTweetsRepository implements TweetsRepository {
     this.jdbcPassword = jdbcPassword;
   }
 
-
   @Override
   public void put(Tweet tweet) {
+    // Custom Span to group the execution of SQL statements
     try (ActiveSpan span =
              GlobalTracer.get()
                  .buildSpan("put")
                  .withTag(Tags.COMPONENT.getKey(), "TweetRepository")
                  .startActive()) {
+      // JDBC executions
       try (Connection connection = DriverManager.getConnection(jdbcUrl, jdbcUsername, jdbcPassword)) {
         final User user = tweet.user();
         final DSLContext dslContext = DSL.using(connection, SQLDialect.POSTGRES);
@@ -78,7 +78,9 @@ public class JooqPostgresTweetsRepository implements TweetsRepository {
                     .columns(HASHTAGS.TEXT, HASHTAGS.TWEET_ID)
                     .values(hashtag.text(), tweetId)
                     .execute());
+        // End of JDBC executions
       } catch (Exception e) {
+        // enriching custom Span with logs
         span.setTag(Tags.ERROR.getKey(), true);
         Map<String, Object> fields = new HashMap<>();
         fields.put("error.kind", e.getClass().getName());
@@ -93,12 +95,14 @@ public class JooqPostgresTweetsRepository implements TweetsRepository {
   }
 
   @Override
-  public List<Tweet> find(FindAllTweets query) {
+  public List<Tweet> find() {
+    // Custom Span to group the execution of SQL statements
     try (ActiveSpan span =
              GlobalTracer.get()
                  .buildSpan("find")
                  .withTag(Tags.COMPONENT.getKey(), "TweetRepository")
                  .startActive()) {
+      // Starting JDBC executions
       try (Connection connection = DriverManager.getConnection(jdbcUrl, jdbcUsername, jdbcPassword)) {
         final DSLContext dslContext = DSL.using(connection, SQLDialect.POSTGRES);
         final Result<Record> records =
@@ -123,7 +127,9 @@ public class JooqPostgresTweetsRepository implements TweetsRepository {
                       .forEach(tweet::addHashtag);
                 })
                 .collect(Collectors.toList());
+        //End of JDBC executions
       } catch (SQLException e) {
+        //Enriching custom Span
         span.setTag(Tags.ERROR.getKey(), true);
         Map<String, Object> fields = new HashMap<>();
         fields.put("error.kind", e.getClass().getName());

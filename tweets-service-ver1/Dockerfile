@@ -1,5 +1,8 @@
 FROM azul/zulu-openjdk:8
 
+ENV DB_URL=jdbc:tracing:postgresql://tweets-db/postgres \
+    TRACING_PROVIDER=JAEGER
+
 WORKDIR /usr/share/tweets-service-ver1/
 
 ADD target/lib lib

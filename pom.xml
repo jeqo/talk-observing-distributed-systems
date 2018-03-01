@@ -12,6 +12,9 @@
         <module>tweets-service-ver1</module>
         <module>tweets-service-ver2</module>
         <module>opentracing-intro</module>
+        <module>tracing-util</module>
+        <module>ping-pong-akka-opentracing</module>
+        <module>ping-pong-akka-opencensus</module>
     </modules>
     <packaging>pom</packaging>
 
@@ -24,7 +27,7 @@
         <jaegertracing.version>0.21.0</jaegertracing.version>
         <prometheus-java.version>0.0.26</prometheus-java.version>
         <elasticsearch.version>5.6.5</elasticsearch.version>
-        <dropwizard.version>1.2.0-rc6</dropwizard.version>
+        <dropwizard.version>1.2.0</dropwizard.version>
     </properties>
 
     <dependencyManagement>
@@ -134,7 +137,7 @@
             <dependency>
                 <groupId>org.elasticsearch.client</groupId>
                 <artifactId>elasticsearch-rest-high-level-client</artifactId>
-                <version>5.6.2</version>
+                <version>${elasticsearch.version}</version>
             </dependency>
 
             <!-- OpenTracing API -->
@@ -170,7 +173,7 @@
             <dependency>
                 <groupId>io.opentracing.contrib</groupId>
                 <artifactId>opentracing-jaxrs2</artifactId>
-                <version>0.0.9</version>
+                <version>0.0.12</version>
             </dependency>
             <dependency>
                 <groupId>io.opentracing.contrib</groupId>

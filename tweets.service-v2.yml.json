@@ -1,0 +1,84 @@
+{
+  "arch": "/home/jeqo/src/github.com/jeqo/talk-observing-distributed-systems/tweets.service-v2.yml",
+  "version": "arch-0.1",
+  "description": "compose yaml",
+  "args": "[./compose2arch/compose2arch -file /home/jeqo/src/github.com/jeqo/talk-observing-distributed-systems/tweets.service-v2.yml]",
+  "date": "2018-02-28T02:33:28.368733142+01:00",
+  "services": [
+    {
+      "name": "tweets-search",
+      "machine": "machine",
+      "instance": "instance",
+      "container": "tweets-service-ver2/search",
+      "process": "process",
+      "package": "monolith",
+      "regions": 1,
+      "count": 3,
+      "dependencies": null
+    },
+    {
+      "name": "www-tweets-search",
+      "machine": "external",
+      "package": "denominator",
+      "count": 0,
+      "dependencies": [
+        "tweets-search"
+      ]
+    },
+    {
+      "name": "tweets-elasticsearch",
+      "machine": "machine",
+      "instance": "instance",
+      "container": "docker.elastic.co/elasticsearch/elasticsearch:5.6.2",
+      "process": "process",
+      "package": "monolith",
+      "regions": 1,
+      "count": 3,
+      "dependencies": null
+    },
+    {
+      "name": "tweets-kafka",
+      "machine": "machine",
+      "instance": "instance",
+      "container": "jeqo/apache-kafka:0.11.0.0-2.11",
+      "process": "process",
+      "package": "monolith",
+      "regions": 1,
+      "count": 3,
+      "dependencies": null
+    },
+    {
+      "name": "tweets-zookeeper",
+      "machine": "machine",
+      "instance": "instance",
+      "container": "jeqo/apache-kafka-zookeeper:0.11.0.0-2.11",
+      "process": "process",
+      "package": "monolith",
+      "regions": 1,
+      "count": 3,
+      "dependencies": null
+    },
+    {
+      "name": "tweets-worker",
+      "machine": "machine",
+      "instance": "instance",
+      "container": "tweets-service-ver2/worker",
+      "process": "process",
+      "package": "monolith",
+      "regions": 1,
+      "count": 3,
+      "dependencies": null
+    },
+    {
+      "name": "tweets-indexer",
+      "machine": "machine",
+      "instance": "instance",
+      "container": "tweets-service-ver2/indexer",
+      "process": "process",
+      "package": "monolith",
+      "regions": 1,
+      "count": 3,
+      "dependencies": null
+    }
+  ]
+}

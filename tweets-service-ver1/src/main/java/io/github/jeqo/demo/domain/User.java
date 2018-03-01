@@ -1,14 +1,12 @@
 package io.github.jeqo.demo.domain;
 
-import io.github.jeqo.demo.rest.TweetRepresentation;
+import io.github.jeqo.demo.rest.model.TweetRepresentation;
 import org.jooq.Record;
-
-import java.util.Collection;
 
 import static io.github.jeqo.demo.infra.jooq.tables.Users.USERS;
 
 /**
- *
+ * User Domain Model
  */
 public class User {
   private final Long id;
@@ -17,7 +15,7 @@ public class User {
   private final String location;
   private final boolean verified;
 
-  public User(Long id, String name, String screenName, String location, boolean verified) {
+  private User(Long id, String name, String screenName, String location, boolean verified) {
     this.id = id;
     this.name = name;
     this.screenName = screenName;
@@ -25,7 +23,7 @@ public class User {
     this.verified = verified;
   }
 
-  public static User build(TweetRepresentation.UserRepresentation user) {
+  static User build(TweetRepresentation.UserRepresentation user) {
     return
         new User(
             user.getId(),
@@ -35,7 +33,7 @@ public class User {
             user.isVerified());
   }
 
-  public TweetRepresentation.UserRepresentation printRepresentation() {
+  TweetRepresentation.UserRepresentation printRepresentation() {
     final TweetRepresentation.UserRepresentation userRepresentation = new TweetRepresentation.UserRepresentation();
     userRepresentation.setId(id);
     userRepresentation.setName(name);
@@ -65,7 +63,7 @@ public class User {
     return verified;
   }
 
-  public static User buildFromRecord(Record record) {
+  static User buildFromRecord(Record record) {
     return
         new User(
             record.get(USERS.ID).longValue(),

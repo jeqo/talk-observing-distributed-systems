@@ -2,9 +2,10 @@ package io.github.jeqo.demo.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import io.github.jeqo.demo.domain.Tweet;
-import io.github.jeqo.demo.domain.TweetsQuery;
 import io.github.jeqo.demo.domain.TweetsService;
-import io.opentracing.contrib.jaxrs2.server.Traced;
+import io.github.jeqo.demo.rest.model.TweetRepresentation;
+import io.github.jeqo.demo.rest.model.TweetsRepresentation;
+import org.eclipse.microprofile.opentracing.Traced;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -56,7 +57,7 @@ public class TweetsResource {
   public Response findTweets() {
     try {
       final List<TweetRepresentation> tweetRepresentations =
-          tweetsService.findTweets(new TweetsQuery())
+          tweetsService.findTweets()
               .stream()
               .map(Tweet::printRepresentation)
               .collect(toList());

@@ -9,16 +9,22 @@ services:
     image: jeqo/apache-kafka-zookeeper:0.11.0.0-2.11
   tweets-worker:
     build: tweets-service-ver2/worker
+    environment:
+      - TRACING_PROVIDER=JAEGER
     ports:
       - 8080
       - 8081
   tweets-indexer:
     build: tweets-service-ver2/indexer
+    environment:
+      - TRACING_PROVIDER=JAEGER
     ports:
       - 8080
       - 8081
   tweets-search:
     build: tweets-service-ver2/search
+    environment:
+      - TRACING_PROVIDER=JAEGER
     ports:
       - 28080:8080
       - 28081:8081

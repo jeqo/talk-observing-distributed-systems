@@ -1,6 +1,6 @@
 package io.github.jeqo.demo.domain;
 
-import io.github.jeqo.demo.rest.TweetRepresentation;
+import io.github.jeqo.demo.rest.model.TweetRepresentation;
 import org.jooq.Record;
 
 import java.util.HashSet;
@@ -12,7 +12,7 @@ import static io.github.jeqo.demo.infra.jooq.Tables.HASHTAGS;
 import static io.github.jeqo.demo.infra.jooq.tables.Tweets.TWEETS;
 
 /**
- *
+ * Tweet Domain Model
  */
 public class Tweet {
   private final Long id;

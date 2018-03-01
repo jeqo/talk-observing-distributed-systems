@@ -1,5 +1,7 @@
 FROM azul/zulu-openjdk:8
 
+ENV TRACING_PROVIDER=JAEGER
+
 WORKDIR /usr/share/tweets-service-ver2/
 
 ADD target/lib lib
